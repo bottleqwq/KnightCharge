@@ -6,14 +6,18 @@ public class 玩家控制器 : MonoBehaviour
 {
     [Header("武器设置")]
     public Transform 剑的旋转轴;
+    
+    // 这些值会在应用武器时被覆盖，但保留作为默认值
+    [Header("默认武器属性（会被选择的武器覆盖）")]
     public float 旋转速度 = 300f;
     public float 最大蓄力时间 = 2.0f;
     public float 最小冲刺力度 = 1f;
     public float 最大冲刺力度 = 10f;
-
-    [Header("伤害设置")]
-    public float 基础伤害 = 10f; // 基础伤害值
-    public float 蓄力加成伤害 = 20f; // 蓄力满时的额外伤害加成
+    public float 基础伤害 = 10f;
+    public float 蓄力加成伤害 = 20f;
+    public float 击退力度 = 10f; // 对敌人造成的击退力度
+    public float 体力消耗 = 10f;
+    public float 体力恢复 = 15f;
 
     private float 当前蓄力时间 = 0f;
     public float 上次蓄力百分比 { get; private set; }
@@ -21,8 +25,6 @@ public class 玩家控制器 : MonoBehaviour
     [Header("体力系统")]
     public Slider 体力条;
     public float 最大体力 = 100f;
-    public float 体力消耗 = 10f;
-    public float 体力恢复 = 15f;
 
     private float 当前体力;
 
@@ -37,6 +39,7 @@ public class 玩家控制器 : MonoBehaviour
     public bool isInvincible = false; //是否为无敌状态
 
     private Rigidbody2D rb;
+    private SpriteRenderer 剑的SpriteRenderer; // 缓存剑的SpriteRenderer
 
     void Start()
     {
@@ -44,6 +47,89 @@ public class 玩家控制器 : MonoBehaviour
         当前体力 = 最大体力;
         当前生命值 = 最大生命值;
         UpdateUI();
+
+        // 应用选择的武器
+        应用选择的武器();
+    }
+
+    /// <summary>
+    /// 应用选择的武器：包括Sprite和所有属性
+    /// </summary>
+    void 应用选择的武器()
+    {
+        // 从管理器获取选择的武器数据
+        武器数据 选择的武器数据 = 武器选择管理器.获取选择的武器();
+
+        if (选择的武器数据 == null)
+        {
+            Debug.LogWarning("未选择武器，使用默认武器属性");
+            return;
+        }
+
+        // 应用武器属性
+        旋转速度 = 选择的武器数据.旋转速度;
+        最大蓄力时间 = 选择的武器数据.最大蓄力时间;
+        最小冲刺力度 = 选择的武器数据.最小冲刺力度;
+        最大冲刺力度 = 选择的武器数据.最大冲刺力度;
+        基础伤害 = 选择的武器数据.基础伤害;
+        蓄力加成伤害 = 选择的武器数据.蓄力加成伤害;
+        击退力度 = 选择的武器数据.击退力度;
+        体力消耗 = 选择的武器数据.体力消耗;
+        体力恢复 = 选择的武器数据.体力恢复;
+
+        Debug.Log($"已应用武器属性: {选择的武器数据.武器名称} | " +
+                  $"旋转速度: {旋转速度} | " +
+                  $"基础伤害: {基础伤害} | " +
+                  $"体力消耗: {体力消耗}");
+
+        // 应用武器Sprite
+        if (剑的旋转轴 != null)
+        {
+            // 在旋转轴的子物体中查找Tag为"Sword"的物体
+            Transform 剑Transform = null;
+            foreach (Transform child in 剑的旋转轴)
+            {
+                if (child.CompareTag("Sword"))
+                {
+                    剑Transform = child;
+                    break;
+                }
+            }
+
+            if (剑Transform != null)
+            {
+                剑的SpriteRenderer = 剑Transform.GetComponent<SpriteRenderer>();
+                if (剑的SpriteRenderer != null)
+                {
+                    剑的SpriteRenderer.sprite = 选择的武器数据.武器Sprite;
+                    Debug.Log($"已应用武器Sprite: {选择的武器数据.武器名称}");
+                }
+                else
+                {
+                    Debug.LogError("未找到剑的SpriteRenderer组件！");
+                }
+
+                // 应用碰撞器尺寸
+                BoxCollider2D 剑的碰撞器 = 剑Transform.GetComponent<BoxCollider2D>();
+                if (剑的碰撞器 != null)
+                {
+                    剑的碰撞器.size = 选择的武器数据.碰撞器尺寸;
+                    Debug.Log($"已应用武器碰撞器尺寸: {选择的武器数据.武器名称} | Size: {选择的武器数据.碰撞器尺寸}");
+                }
+                else
+                {
+                    Debug.LogWarning("未找到剑的BoxCollider2D组件！");
+                }
+            }
+            else
+            {
+                Debug.LogError("未找到Tag为'Sword'的子物体！");
+            }
+        }
+        else
+        {
+            Debug.LogError("剑的旋转轴未设置！");
+        }
     }
 
     void Update()
@@ -169,7 +255,6 @@ public class 玩家控制器 : MonoBehaviour
             // staminaSlider.value = currentStamina;
         }
     }
-    // 新增：玩家受伤方法
     public void TakeDamage(int damage)
     {
         if (isInvincible) return;
