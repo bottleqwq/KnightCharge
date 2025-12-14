@@ -162,10 +162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "\u79FB\u52A8\u901F\u5EA6": 0.5
-  "\u6700\u5927\u751F\u547D": 10
+  "\u6700\u5927\u751F\u547D": 8
   "\u4F24\u5BB3": 1
   "\u653B\u51FB\u8DDD\u79BB": 5
-  "\u53D1\u5C04\u95F4\u9694": 3
+  "\u53D1\u5C04\u95F4\u9694": 4
   "\u5F39\u5E55\u9884\u5236\u4F53": {fileID: 8020267445155183514, guid: 025a3e97de9c97749bfc069745c8c98e, type: 3}
   "\u53D7\u51FB\u53D8\u8272\u65F6\u95F4": 0.1
   "\u53D7\u51FB\u50F5\u76F4\u65F6\u95F4": 0.5

@@ -25,6 +25,8 @@ public class 远程敌人控制器 : MonoBehaviour
     private bool isStunned = false; // 是否处于僵直状态
     private bool isInAttackRange = false; // 是否在攻击范围内
     private float 上次发射时间 = 0f; // 上次发射弹幕的时间
+    private float 上次受到伤害时间 = -1f; // 上次受到伤害的时间戳，用于防止重复伤害
+    private const float 伤害冷却时间 = 0.1f; // 同一冲刺中的伤害冷却时间（秒）
 
     void Start()
     {
@@ -124,11 +126,30 @@ public class 远程敌人控制器 : MonoBehaviour
     {
         if (other.CompareTag("Sword"))
         {
-            玩家控制器 playerScript = other.GetComponentInParent<玩家控制器>();
+            处理剑的碰撞(other);
+        }
+    }
 
-            if (playerScript != null)
+    // 持续碰撞检测：当剑的Collider已经与敌人重合时，检测玩家是否开始冲刺
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Sword"))
+        {
+            处理剑的碰撞(other);
+        }
+    }
+
+    // 统一的碰撞处理逻辑
+    void 处理剑的碰撞(Collider2D swordCollider)
+    {
+        玩家控制器 playerScript = swordCollider.GetComponentInParent<玩家控制器>();
+
+        if (playerScript != null)
+        {
+            if (playerScript.isDashing)
             {
-                if (playerScript.isDashing)
+                // 检查伤害冷却时间，防止在同一冲刺中重复造成伤害
+                if (Time.time - 上次受到伤害时间 >= 伤害冷却时间)
                 {
                     float chargePercent = playerScript.上次蓄力百分比;
                     // 从玩家控制器获取伤害值
@@ -138,6 +159,7 @@ public class 远程敌人控制器 : MonoBehaviour
 
                     // 执行伤害
                     TakeDamage(damage, knockbackDir, chargePercent, knockbackForce);
+                    上次受到伤害时间 = Time.time; // 更新上次受到伤害的时间
                 }
             }
         }

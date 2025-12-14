@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class 玩家控制器 : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class 玩家控制器 : MonoBehaviour
     public float 最大冲刺力度 = 10f;
     public float 基础伤害 = 10f;
     public float 蓄力加成伤害 = 20f;
-    public float 击退力度 = 10f; // 对敌人造成的击退力度
+    public float 击退力度 = 10f;
     public float 体力消耗 = 10f;
     public float 体力恢复 = 15f;
 
@@ -23,15 +24,30 @@ public class 玩家控制器 : MonoBehaviour
     public float 上次蓄力百分比 { get; private set; }
 
     [Header("体力系统")]
-    public Slider 体力条;
-    public float 最大体力 = 100f;
+    public Slider 体力值条;
+    public TextMeshProUGUI 体力值文本;
 
-    private float 当前体力;
+    public float 最大体力值 = 100f;
+    private float 当前体力值;
 
     [Header("玩家生命")]
-    public int 最大生命值 = 10;
+    public Slider 生命值条;
+    public TextMeshProUGUI 生命值文本;
 
-    public int 当前生命值;
+    public int 最大生命值 = 10;
+    private int 当前生命值;
+
+    [Header("护甲系统")]
+    public Slider 护甲值条;
+    public TextMeshProUGUI 护甲值文本;
+
+    public float 护甲恢复速度 = 1f;
+    public float 护甲恢复延迟 = 3f;
+    public int 最大护甲值 = 5;
+    private int 当前护甲值;
+    
+    private float 上次受伤时间 = -999f;
+    private float 护甲恢复累积值 = 0f; // 用于累积护甲恢复值，避免小数丢失
 
     [Header("状态 (只读)")]
     public bool isAiming = false; // 是否正在瞄准(停止旋转)
@@ -44,8 +60,11 @@ public class 玩家控制器 : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        当前体力 = 最大体力;
+        当前体力值 = 最大体力值;
         当前生命值 = 最大生命值;
+        当前护甲值 = 最大护甲值;
+        上次受伤时间 = -999f; // 初始化为一个很早的时间，让护甲可以立即开始恢复
+        护甲恢复累积值 = 0f; // 初始化护甲恢复累积值
         UpdateUI();
 
         // 应用选择的武器
@@ -144,6 +163,9 @@ public class 玩家控制器 : MonoBehaviour
         // 恢复体力逻辑：
         RegenerateStamina();
 
+        // 恢复护甲值逻辑：
+        RegenerateArmor();
+
         // 如果正在冲刺中，暂时不处理输入或旋转
         if (isDashing) return;
 
@@ -157,7 +179,7 @@ public class 玩家控制器 : MonoBehaviour
         // 1. 按下：检查体力是否足够
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
-            if (当前体力 >= 体力消耗)
+            if (当前体力值 >= 体力消耗)
             {
                 isAiming = true;
                 当前蓄力时间 = 0f;
@@ -207,7 +229,7 @@ public class 玩家控制器 : MonoBehaviour
     void PerformDash()
     {
         // 扣除体力
-        当前体力 -= 体力消耗;
+        当前体力值 -= 体力消耗;
         UpdateUI(); // 立即刷新UI
 
         // 计算蓄力百分比 (0 到 1)
@@ -234,34 +256,125 @@ public class 玩家控制器 : MonoBehaviour
     void RegenerateStamina()
     {
         // 如果体力没满，就增加
-        if (当前体力 < 最大体力)
+        if (当前体力值 < 最大体力值)
         {
-            当前体力 += 体力恢复 * Time.deltaTime;
+            当前体力值 += 体力恢复 * Time.deltaTime;
             // 确保不超过上限
-            当前体力 = Mathf.Min(当前体力, 最大体力);
+            当前体力值 = Mathf.Min(当前体力值, 最大体力值);
             UpdateUI();
         }
     }
 
-    // 单独写一个方法更新UI，整洁一些
+    /// <summary>
+    /// 恢复护甲值：受伤后延迟一段时间开始恢复
+    /// </summary>
+    void RegenerateArmor()
+    {
+        // 检查是否已经过了恢复延迟时间
+        if (Time.time - 上次受伤时间 >= 护甲恢复延迟)
+        {
+            // 如果护甲没满，就恢复
+            if (当前护甲值 < 最大护甲值)
+            {
+                // 累积恢复值，避免小数丢失
+                护甲恢复累积值 += 护甲恢复速度 * Time.deltaTime;
+                
+                // 当累积值达到1或以上时，恢复1点护甲
+                if (护甲恢复累积值 >= 1f)
+                {
+                    int 恢复点数 = Mathf.FloorToInt(护甲恢复累积值);
+                    当前护甲值 += 恢复点数;
+                    护甲恢复累积值 -= 恢复点数; // 保留小数部分
+                    
+                    // 确保不超过上限
+                    当前护甲值 = Mathf.Min(当前护甲值, 最大护甲值);
+                    UpdateUI();
+                }
+            }
+            else
+            {
+                // 如果护甲已满，重置累积值
+                护甲恢复累积值 = 0f;
+            }
+        }
+    }
+
     void UpdateUI()
     {
-        if (体力条 != null)
+        // 更新体力条
+        if (体力值条 != null)
         {
-            体力条.value = 当前体力 / 最大体力 * 100f; // 假设Slider是0-100
+            体力值条.value = 当前体力值 / 最大体力值 * 100f; // 假设Slider是0-100
 
             // 也可以用 Slider 的 normalizedValue (0-1)
             // staminaSlider.maxValue = maxStamina;
             // staminaSlider.value = currentStamina;
+        }
+
+        // 更新体力值文本
+        if (体力值文本 != null)
+        {
+            体力值文本.text = $"体力: {(int)当前体力值}/{(int)最大体力值}";
+        }
+
+        // 更新生命值文本
+        if (生命值文本 != null)
+        {
+            生命值文本.text = $"生命: {当前生命值}/{最大生命值}";
+        }
+
+        // 更新生命值条（如果使用Slider）
+        if (生命值条 != null)
+        {
+            生命值条.maxValue = 最大生命值;
+            生命值条.value = 当前生命值;
+        }
+
+        // 更新护甲值文本
+        if (护甲值文本 != null)
+        {
+            护甲值文本.text = $"护甲: {当前护甲值}/{最大护甲值}";
+        }
+
+        // 更新护甲值条（如果使用Slider）
+        if (护甲值条 != null)
+        {
+            护甲值条.maxValue = 最大护甲值;
+            护甲值条.value = 当前护甲值;
         }
     }
     public void TakeDamage(int damage)
     {
         if (isInvincible) return;
         
-        当前生命值 -= damage;
+        // 记录受伤时间，用于护甲恢复延迟
+        上次受伤时间 = Time.time;
+        护甲恢复累积值 = 0f; // 重置护甲恢复累积值，重新开始计算恢复延迟
+        
+        // 优先扣除护甲值，护甲值为0后再扣除生命值
+        int 剩余伤害 = damage;
+        
+        if (当前护甲值 > 0)
+        {
+            // 先扣除护甲值
+            int 护甲扣除 = Mathf.Min(当前护甲值, 剩余伤害);
+            当前护甲值 -= 护甲扣除;
+            剩余伤害 -= 护甲扣除;
+            Debug.Log($"护甲受到伤害: {护甲扣除}, 剩余护甲: {当前护甲值}");
+        }
+        
+        // 如果还有剩余伤害，扣除生命值
+        if (剩余伤害 > 0)
+        {
+            当前生命值 -= 剩余伤害;
+            当前生命值 = Mathf.Max(0, 当前生命值); // 确保生命值不会小于0
+            Debug.Log($"生命值受到伤害: {剩余伤害}, 剩余生命: {当前生命值}");
+        }
+        
+        UpdateUI(); // 更新UI显示
         StartCoroutine(InvincibilityRoutine());
-        Debug.Log($"玩家受伤！当前血量: {当前生命值}");
+        Debug.Log($"玩家受伤！总伤害: {damage}, 当前护甲: {当前护甲值}, 当前血量: {当前生命值}");
+        
         if (当前生命值 <= 0)
         {
             Debug.Log("游戏结束！");
