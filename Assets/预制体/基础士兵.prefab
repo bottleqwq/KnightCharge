@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e7a5b2add27bd0d41807ac30abb40b24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -132,6 +132,8 @@ MonoBehaviour:
   "\u53D7\u51FB\u53D8\u8272\u65F6\u95F4": 0.2
   "\u53D7\u51FB\u50F5\u76F4\u65F6\u95F4": 2
   "\u653B\u51FB\u50F5\u76F4\u65F6\u95F4": 2
+  "\u6B7B\u4EA1\u6DE1\u51FA\u65F6\u95F4": 1
+  "\u6B7B\u4EA1\u71C3\u70E7\u989C\u8272": {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!58 &3282551041377079156
 CircleCollider2D:
   m_ObjectHideFlags: 0

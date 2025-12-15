@@ -21,13 +21,18 @@ public class 远程敌人控制器 : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private float 当前生命;
+    private bool isDead = false;
     private bool isKnockedBack = false; // 是否处于被击退状态
     private bool isStunned = false; // 是否处于僵直状态
     private bool isInAttackRange = false; // 是否在攻击范围内
     private float 上次发射时间 = 0f; // 上次发射弹幕的时间
     private float 上次受到伤害时间 = -1f; // 上次受到伤害的时间戳，用于防止重复伤害
-    private const float 伤害冷却时间 = 0.1f; // 同一冲刺中的伤害冷却时间（秒）
-
+    private const float 伤害冷却时间 = 0.5f; // 同一冲刺中的伤害冷却时间（秒）
+    
+    [Header("死亡特效 (All In 1 Sprite Shader)")]
+    public float 死亡淡出时间 = 0.75f;
+    public Color 死亡燃烧颜色 = Color.yellow;
+    private Material 死亡材质实例;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -50,6 +55,7 @@ public class 远程敌人控制器 : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
         if (playerTransform == null) return;
 
         // 计算到玩家的距离
@@ -167,8 +173,10 @@ public class 远程敌人控制器 : MonoBehaviour
 
     void TakeDamage(float damage, Vector2 knockbackDir, float chargePercent, float knockbackForce)
     {
+        if (isDead) return;
         当前生命 -= damage;
         Debug.Log($"远程敌人受到伤害: {damage}, 剩余血量: {当前生命}");
+        音频管理器.Instance.播放命中音效();
 
         // 触发受击僵直
         StartCoroutine(StunRoutine(受击僵直时间));
@@ -227,10 +235,48 @@ public class 远程敌人控制器 : MonoBehaviour
 
     void Die()
     {
-        // 这里可以播放死亡动画或粒子特效
+        if (isDead) return;
+        isDead = true;
+        StopAllCoroutines();
+        StartCoroutine(DeathEffectRoutine());
+    }
+    IEnumerator DeathEffectRoutine()
+    {
+        // 禁用碰撞与移动，避免死亡后继续交互
+        Collider2D col = GetComponent<Collider2D>();
+        if (col) col.enabled = false;
+        if (rb)
+        {
+            rb.velocity = Vector2.zero;
+            rb.isKinematic = true;
+        }
+
+        // 为当前实例克隆一份材质，避免影响其他敌人
+        if (spriteRenderer && spriteRenderer.material)
+        {
+            if (死亡材质实例 == null)
+            {
+                死亡材质实例 = new Material(spriteRenderer.material);
+                死亡材质实例.SetColor("_FadeBurnColor", 死亡燃烧颜色);
+            }
+            spriteRenderer.material = 死亡材质实例;
+        }
+
+        float timer = 0f;
+        // All In 1 Sprite Shader 的 Fade Amount：-0.1 为完全显示，1 为完全烧蚀
+        float 初始淡出 = -0.1f;
+        float 目标淡出 = 1f;
+        while (timer < 死亡淡出时间)
+        {
+            timer += Time.deltaTime;
+            float t = Mathf.Clamp01(timer / 死亡淡出时间);
+            float fadeValue = Mathf.Lerp(初始淡出, 目标淡出, t);
+            if (死亡材质实例) 死亡材质实例.SetFloat("_FadeAmount", fadeValue);
+            yield return null;
+        }
+
         Destroy(gameObject);
     }
-
     // 可视化攻击范围（在Scene视图中显示）
     void OnDrawGizmosSelected()
     {
