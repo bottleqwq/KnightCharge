@@ -18,7 +18,6 @@ public class 玩家控制器 : MonoBehaviour
     public float 蓄力加成伤害 = 20f;
     public float 击退力度 = 10f;
     public float 体力消耗 = 10f;
-    public float 体力恢复 = 15f;
 
     private float 当前蓄力时间 = 0f;
     public float 上次蓄力百分比 { get; private set; }
@@ -27,23 +26,18 @@ public class 玩家控制器 : MonoBehaviour
     public Slider 体力值条;
     public TextMeshProUGUI 体力值文本;
 
-    public float 最大体力值 = 100f;
     private float 当前体力值;
 
     [Header("玩家生命")]
     public Slider 生命值条;
     public TextMeshProUGUI 生命值文本;
 
-    public int 最大生命值 = 10;
     private int 当前生命值;
 
     [Header("护甲系统")]
     public Slider 护甲值条;
     public TextMeshProUGUI 护甲值文本;
 
-    public float 护甲恢复速度 = 1f;
-    public float 护甲恢复延迟 = 3f;
-    public int 最大护甲值 = 5;
     private int 当前护甲值;
     
     private float 上次受伤时间 = -999f;
@@ -60,9 +54,9 @@ public class 玩家控制器 : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        当前体力值 = 最大体力值;
-        当前生命值 = 最大生命值;
-        当前护甲值 = 最大护甲值;
+        当前体力值 = 玩家属性.Instance.最大体力值;
+        当前生命值 = 玩家属性.Instance.最大生命值;
+        当前护甲值 = 玩家属性.Instance.最大护甲值;
         上次受伤时间 = -999f; // 初始化为一个很早的时间，让护甲可以立即开始恢复
         护甲恢复累积值 = 0f; // 初始化护甲恢复累积值
         UpdateUI();
@@ -94,7 +88,6 @@ public class 玩家控制器 : MonoBehaviour
         蓄力加成伤害 = 选择的武器数据.蓄力加成伤害;
         击退力度 = 选择的武器数据.击退力度;
         体力消耗 = 选择的武器数据.体力消耗;
-        体力恢复 = 选择的武器数据.体力恢复;
 
         Debug.Log($"已应用武器属性: {选择的武器数据.武器名称} | " +
                   $"旋转速度: {旋转速度} | " +
@@ -256,11 +249,11 @@ public class 玩家控制器 : MonoBehaviour
     void RegenerateStamina()
     {
         // 如果体力没满，就增加
-        if (当前体力值 < 最大体力值)
+        if (当前体力值 < 玩家属性.Instance.最大体力值)
         {
-            当前体力值 += 体力恢复 * Time.deltaTime;
+            当前体力值 += 玩家属性.Instance.体力恢复 * Time.deltaTime;
             // 确保不超过上限
-            当前体力值 = Mathf.Min(当前体力值, 最大体力值);
+            当前体力值 = Mathf.Min(当前体力值, 玩家属性.Instance.最大体力值);
             UpdateUI();
         }
     }
@@ -271,13 +264,13 @@ public class 玩家控制器 : MonoBehaviour
     void RegenerateArmor()
     {
         // 检查是否已经过了恢复延迟时间
-        if (Time.time - 上次受伤时间 >= 护甲恢复延迟)
+        if (Time.time - 上次受伤时间 >= 玩家属性.Instance.护甲恢复延迟)
         {
             // 如果护甲没满，就恢复
-            if (当前护甲值 < 最大护甲值)
+            if (当前护甲值 < 玩家属性.Instance.最大护甲值)
             {
                 // 累积恢复值，避免小数丢失
-                护甲恢复累积值 += 护甲恢复速度 * Time.deltaTime;
+                护甲恢复累积值 += 玩家属性.Instance.护甲恢复速度 * Time.deltaTime;
                 
                 // 当累积值达到1或以上时，恢复1点护甲
                 if (护甲恢复累积值 >= 1f)
@@ -287,7 +280,7 @@ public class 玩家控制器 : MonoBehaviour
                     护甲恢复累积值 -= 恢复点数; // 保留小数部分
                     
                     // 确保不超过上限
-                    当前护甲值 = Mathf.Min(当前护甲值, 最大护甲值);
+                    当前护甲值 = Mathf.Min(当前护甲值, 玩家属性.Instance.最大护甲值);
                     UpdateUI();
                 }
             }
@@ -304,7 +297,7 @@ public class 玩家控制器 : MonoBehaviour
         // 更新体力条
         if (体力值条 != null)
         {
-            体力值条.value = 当前体力值 / 最大体力值 * 100f; // 假设Slider是0-100
+            体力值条.value = 当前体力值 / 玩家属性.Instance.最大体力值 * 100f; // 假设Slider是0-100
 
             // 也可以用 Slider 的 normalizedValue (0-1)
             // staminaSlider.maxValue = maxStamina;
@@ -314,32 +307,32 @@ public class 玩家控制器 : MonoBehaviour
         // 更新体力值文本
         if (体力值文本 != null)
         {
-            体力值文本.text = $"体力: {(int)当前体力值}/{(int)最大体力值}";
+            体力值文本.text = $"体力: {(int)当前体力值}/{(int)玩家属性.Instance.最大体力值}";
         }
 
         // 更新生命值文本
         if (生命值文本 != null)
         {
-            生命值文本.text = $"生命: {当前生命值}/{最大生命值}";
+            生命值文本.text = $"生命: {当前生命值}/{玩家属性.Instance.最大生命值}";
         }
 
         // 更新生命值条（如果使用Slider）
         if (生命值条 != null)
         {
-            生命值条.maxValue = 最大生命值;
+            生命值条.maxValue = 玩家属性.Instance.最大生命值;
             生命值条.value = 当前生命值;
         }
 
         // 更新护甲值文本
         if (护甲值文本 != null)
         {
-            护甲值文本.text = $"护甲: {当前护甲值}/{最大护甲值}";
+            护甲值文本.text = $"护甲: {当前护甲值}/{玩家属性.Instance.最大护甲值}";
         }
 
         // 更新护甲值条（如果使用Slider）
         if (护甲值条 != null)
         {
-            护甲值条.maxValue = 最大护甲值;
+            护甲值条.maxValue = 玩家属性.Instance.最大护甲值;
             护甲值条.value = 当前护甲值;
         }
     }

@@ -29,11 +29,13 @@ public class 武器数据
 
     [Header("体力设置")]
     public float 体力消耗 = 10f;
-    public float 体力恢复 = 15f;
 
     [Header("碰撞器设置")]
     public Vector2 碰撞器尺寸 = new Vector2(0.2f, 0.64f); // Box Collider2D的Size
 
+    [Header("武器介绍")]
+    [TextArea]
+    public string 武器介绍;
     /// <summary>
     /// 构造函数：创建武器数据
     /// </summary>
