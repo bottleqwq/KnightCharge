@@ -18,6 +18,8 @@ public class 玩家属性 : MonoBehaviour
 
     [Header("UI 设置")]
     public TextMeshProUGUI 金币显示文本;
+
+    private const string GOLD_SAVE_KEY = "骑士冲锋金币数量";
     private void Awake()
     {
         if (Instance == null)
@@ -32,6 +34,7 @@ public class 玩家属性 : MonoBehaviour
     }
     private void Start()
     {
+        当前金币 = PlayerPrefs.GetInt(GOLD_SAVE_KEY, 0);
         更新金币显示文本();
     }
     void 更新金币显示文本()
@@ -45,6 +48,8 @@ public class 玩家属性 : MonoBehaviour
     {
         当前金币 += amount;
         更新金币显示文本();
+        PlayerPrefs.SetInt(GOLD_SAVE_KEY, 当前金币);
+        PlayerPrefs.Save();
         Debug.Log("当前金币: " + 当前金币);
     }
 

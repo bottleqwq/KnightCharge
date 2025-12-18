@@ -3,8 +3,8 @@ using UnityEngine;
 public class 金币 : MonoBehaviour
 {
     public int 金币价值 = 1;
-    public float 飞行速度 = 2f;
-    public float 飞行加速度 = 2f;
+    public float 飞行速度 = 3f;
+    public float 飞行加速度 = 3f;
     private Transform 玩家位置;
     private float spawnTime; //缓冲时间
     private bool isMagnetized = false; // 标记是否已经被吸附
@@ -17,7 +17,6 @@ public class 金币 : MonoBehaviour
         if (playerObj != null)
         {
             玩家位置 = playerObj.transform;
-            Debug.Log("找到玩家位置");
         }
     }
     void Update()

@@ -226,7 +226,7 @@ public class 敌人生成器 : MonoBehaviour
         int 选择索引 = Mathf.Min(当前难度等级 / 2, 可用列表.Length - 1);
         
         // 添加一些随机性（可能生成当前等级或低一级的敌人）
-        if (选择索引 > 0 && Random.value < 0.3f)
+        if (选择索引 > 0 && Random.value < 0.4f)
         {
             选择索引--;
         }
