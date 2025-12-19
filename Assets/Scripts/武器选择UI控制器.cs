@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 /// <summary>
 /// 武器选择UI控制器：处理武器选择界面的交互
@@ -9,11 +10,24 @@ public class 武器选择UI控制器 : MonoBehaviour
 {
     [Header("UI引用")]
     public Image 武器图标;
-    public Text 武器介绍;
+    public TextMeshProUGUI 武器名称;
+    public TextMeshProUGUI 旋转速度;
+    public TextMeshProUGUI 基础伤害;
+    public TextMeshProUGUI 蓄力加成伤害;
+    public TextMeshProUGUI 最大蓄力时间;
+    public TextMeshProUGUI 最小冲刺力度;
+    public TextMeshProUGUI 最大冲刺力度;
+    public TextMeshProUGUI 击退力度;
+    public TextMeshProUGUI 体力消耗;
+    public TextMeshProUGUI 武器介绍;
 
     [Header("强化系统")]
     public Button 强化基础伤害按钮;
-    public float 每次强化增加伤害值 = 5f;
+    public Button 强化蓄力加成伤害按钮;
+    public Button 强化体力消耗按钮;
+    public float 基础伤害强化值 = 5f;
+    public float 蓄力加成伤害强化值 = 5f;
+    public float 体力消耗强化值 = 1f;
 
     [Header("武器选择按钮设置")]
     public Button 新手木剑选择按钮;
@@ -22,7 +36,6 @@ public class 武器选择UI控制器 : MonoBehaviour
     public Button 长矛选择按钮;
     public Button 锤子选择按钮;
     public Button 镰刀选择按钮;
-    public Button 黄金巨剑选择按钮;
 
     [Header("武器Sprite引用")]
     public Sprite 新手木剑Sprite;
@@ -31,7 +44,6 @@ public class 武器选择UI控制器 : MonoBehaviour
     public Sprite 长矛Sprite;
     public Sprite 锤子Sprite;
     public Sprite 镰刀Sprite;
-    public Sprite 黄金巨剑Sprite;
 
     [Header("新手木剑属性")]
     public float 新手木剑_旋转速度 = 250f;
@@ -111,20 +123,6 @@ public class 武器选择UI控制器 : MonoBehaviour
     [TextArea]
     public string 镰刀_武器介绍;
 
-    [Header("黄金巨剑属性")]
-    public float 黄金巨剑_旋转速度 = 300f;
-    public float 黄金巨剑_最大蓄力时间 = 2.0f;
-    public float 黄金巨剑_最小冲刺力度 = 20f;
-    public float 黄金巨剑_最大冲刺力度 = 40f;
-    public float 黄金巨剑_基础伤害 = 50f;
-    public float 黄金巨剑_蓄力加成伤害 = 50f;
-    public float 黄金巨剑_击退力度 = 30f;
-    public float 黄金巨剑_体力消耗 = 1f;
-    public Vector2 黄金巨剑_碰撞器尺寸 = new Vector2(0.15f, 0.5f);
-    [TextArea]
-    public string 黄金巨剑_武器介绍;
-
-
     [Header("UI设置")]
     public Button 开始游戏按钮;
     public string 游戏战斗场景名称 = "游戏战斗场景"; // 战斗场景的名称
@@ -158,10 +156,6 @@ public class 武器选择UI控制器 : MonoBehaviour
         {
             镰刀选择按钮.onClick.AddListener(() => 选择武器(创建镰刀数据()));
         }
-        if (黄金巨剑选择按钮 != null)
-        {
-            黄金巨剑选择按钮.onClick.AddListener(() => 选择武器(创建黄金巨剑数据()));
-        }
         // 绑定开始游戏按钮
         if (开始游戏按钮 != null)
         {
@@ -170,7 +164,7 @@ public class 武器选择UI控制器 : MonoBehaviour
 
         if (强化基础伤害按钮 != null)
         {
-            强化基础伤害按钮.onClick.AddListener(强化当前武器);
+            强化基础伤害按钮.onClick.AddListener(强化基础伤害);
             // 初始状态下，未选择武器时禁用强化按钮
             强化基础伤害按钮.interactable = false;
         }
@@ -182,6 +176,14 @@ public class 武器选择UI控制器 : MonoBehaviour
         }
 
         选择武器(创建新手木剑数据());
+       
+        if (当前选择的武器数据.武器名称 == "新手木剑")
+        {
+            强化基础伤害按钮.gameObject.SetActive(false);
+            强化蓄力加成伤害按钮.gameObject.SetActive(false);
+            强化体力消耗按钮.gameObject.SetActive(false);
+        }
+
     }
 
     /// <summary>
@@ -296,25 +298,6 @@ public class 武器选择UI控制器 : MonoBehaviour
     }
 
     /// <summary>
-    /// 创建黄金巨剑的武器数据
-    /// </summary>
-    武器数据 创建黄金巨剑数据()
-    {
-        武器数据 数据 = new 武器数据("黄金巨剑", 黄金巨剑Sprite);
-        数据.旋转速度 = 黄金巨剑_旋转速度;
-        数据.最大蓄力时间 = 黄金巨剑_最大蓄力时间;
-        数据.最小冲刺力度 = 黄金巨剑_最小冲刺力度;
-        数据.最大冲刺力度 = 黄金巨剑_最大冲刺力度;
-        数据.基础伤害 = 黄金巨剑_基础伤害;
-        数据.蓄力加成伤害 = 黄金巨剑_蓄力加成伤害;
-        数据.击退力度 = 黄金巨剑_击退力度;
-        数据.体力消耗 = 黄金巨剑_体力消耗;
-        数据.碰撞器尺寸 = 黄金巨剑_碰撞器尺寸;
-        数据.武器介绍 = 黄金巨剑_武器介绍;
-        return 数据;
-    }
-
-    /// <summary>
     /// 选择武器
     /// </summary>
     void 选择武器(武器数据 weaponData)
@@ -325,10 +308,31 @@ public class 武器选择UI控制器 : MonoBehaviour
             return;
         }
 
-        武器图标.sprite = weaponData.武器Sprite;
-        武器介绍.text = $"名称：{weaponData.武器名称}\n旋转速度：{weaponData.旋转速度}\n基础伤害：{weaponData.基础伤害}\n蓄力加成伤害：{weaponData.蓄力加成伤害}\n最大蓄力时间：{weaponData.最大蓄力时间}\n最小冲刺力度：{weaponData.最小冲刺力度}\n最大冲刺力度：{weaponData.最大冲刺力度}\n击退力度：{weaponData.击退力度}\n体力消耗：{weaponData.体力消耗}\n武器介绍：{weaponData.武器介绍}";
+        武器图标.sprite = weaponData.武器Sprite;        
+        武器名称.text = $"武器名称：{weaponData.武器名称}";
+        旋转速度.text = $"旋转速度：{weaponData.旋转速度}";
+        基础伤害.text = $"基础伤害：{weaponData.基础伤害}";
+        蓄力加成伤害.text = $"蓄力加成伤害：{weaponData.蓄力加成伤害}";
+        最大蓄力时间.text = $"最大蓄力时间：{weaponData.最大蓄力时间}";
+        最小冲刺力度.text = $"最小冲刺力度：{weaponData.最小冲刺力度}";
+        最大冲刺力度.text = $"最大冲刺力度：{weaponData.最大冲刺力度}";
+        击退力度.text = $"击退力度：{weaponData.击退力度}";
+        体力消耗.text = $"体力消耗：{weaponData.体力消耗}";
+        武器介绍.text = $"武器介绍：{weaponData.武器介绍}";
         当前选择的武器数据 = weaponData;
 
+        if (当前选择的武器数据.武器名称 == "新手木剑")
+        {
+            强化基础伤害按钮.gameObject.SetActive(false);
+            强化蓄力加成伤害按钮.gameObject.SetActive(false);
+            强化体力消耗按钮.gameObject.SetActive(false);
+        }
+        else
+        {
+            强化基础伤害按钮.gameObject.SetActive(true);
+            强化蓄力加成伤害按钮.gameObject.SetActive(true);
+            强化体力消耗按钮.gameObject.SetActive(true);
+        }
         // 保存到管理器
         武器选择管理器.设置选择的武器(weaponData);
 
@@ -348,7 +352,7 @@ public class 武器选择UI控制器 : MonoBehaviour
     /// <summary>
     /// 点击强化按钮时调用
     /// </summary>
-    void 强化当前武器()
+    void 强化基础伤害()
     {
         if (当前选择的武器数据 == null) return;
 
@@ -359,39 +363,34 @@ public class 武器选择UI控制器 : MonoBehaviour
         switch (currentName)
         {
             case "新手木剑":
-                新手木剑_基础伤害 += 每次强化增加伤害值;
+                新手木剑_基础伤害 += 基础伤害强化值;
                 // 这里调用 选择武器 重新刷新界面
                 选择武器(创建新手木剑数据());
                 break;
 
             case "大剑":
-                大剑_基础伤害 += 每次强化增加伤害值;
+                大剑_基础伤害 += 基础伤害强化值;
                 选择武器(创建大剑数据());
                 break;
 
             case "细剑":
-                细剑_基础伤害 += 每次强化增加伤害值;
+                细剑_基础伤害 += 基础伤害强化值;
                 选择武器(创建细剑数据());
                 break;
 
             case "长矛":
-                长矛_基础伤害 += 每次强化增加伤害值;
+                长矛_基础伤害 += 基础伤害强化值;
                 选择武器(创建长矛数据());
                 break;
 
             case "锤子":
-                锤子_基础伤害 += 每次强化增加伤害值;
+                锤子_基础伤害 += 基础伤害强化值;
                 选择武器(创建锤子数据());
                 break;
 
             case "镰刀":
-                镰刀_基础伤害 += 每次强化增加伤害值;
+                镰刀_基础伤害 += 基础伤害强化值;
                 选择武器(创建镰刀数据());
-                break;
-
-            case "黄金巨剑":
-                黄金巨剑_基础伤害 += 每次强化增加伤害值;
-                选择武器(创建黄金巨剑数据());
                 break;
 
             default:
@@ -399,7 +398,7 @@ public class 武器选择UI控制器 : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"已强化 {currentName}，基础伤害增加了 {每次强化增加伤害值}");
+        Debug.Log($"已强化 {currentName}，基础伤害增加了 {基础伤害强化值}");
     }
 
     /// <summary>
