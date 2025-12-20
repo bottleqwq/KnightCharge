@@ -19,7 +19,7 @@ public class 玩家属性 : MonoBehaviour
     [Header("UI 设置")]
     public TextMeshProUGUI 金币显示文本;
 
-    private const string GOLD_SAVE_KEY = "骑士冲锋金币数量";
+    private const string 保存金币KEY = "骑士冲锋金币数量";
     private void Awake()
     {
         if (Instance == null)
@@ -34,7 +34,7 @@ public class 玩家属性 : MonoBehaviour
     }
     private void Start()
     {
-        当前金币 = PlayerPrefs.GetInt(GOLD_SAVE_KEY, 0);
+        当前金币 = PlayerPrefs.GetInt(保存金币KEY, 0);
         更新金币显示文本();
     }
     void 更新金币显示文本()
@@ -48,7 +48,7 @@ public class 玩家属性 : MonoBehaviour
     {
         当前金币 += amount;
         更新金币显示文本();
-        PlayerPrefs.SetInt(GOLD_SAVE_KEY, 当前金币);
+        PlayerPrefs.SetInt(保存金币KEY, 当前金币);
         PlayerPrefs.Save();
         Debug.Log("当前金币: " + 当前金币);
     }
@@ -63,6 +63,21 @@ public class 玩家属性 : MonoBehaviour
         更新金币显示文本(); // 刚连接上，立刻刷新一次显示当前金额
     }
 
+    public bool 扣除金币(int amount)
+    {
+        if (当前金币 >= amount)
+        {
+            当前金币 -= amount;
+
+            // 保存金币
+            PlayerPrefs.SetInt(保存金币KEY, 当前金币);
+            PlayerPrefs.Save();
+
+            更新金币显示文本();
+            return true;
+        }
+        return false;
+    }
     // 辅助画线，方便调试
     private void OnDrawGizmosSelected()
     {

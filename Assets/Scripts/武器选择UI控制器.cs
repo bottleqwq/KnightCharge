@@ -25,9 +25,18 @@ public class 武器选择UI控制器 : MonoBehaviour
     public Button 强化基础伤害按钮;
     public Button 强化蓄力加成伤害按钮;
     public Button 强化体力消耗按钮;
+    public TextMeshProUGUI 基础伤害强化花费;
     public float 基础伤害强化值 = 5f;
     public float 蓄力加成伤害强化值 = 5f;
     public float 体力消耗强化值 = 1f;
+    public int 当前强化等级 = 0;
+    private const string 保存强化等级KEY = "骑士冲锋强化等级";
+    public int 一次强化花费 = 1;
+    public int 二次强化花费 = 2;
+    public int 三次强化花费 = 3;
+    public int 四次强化花费 = 4;
+    public int 五次强化花费 = 5;
+    private int 强化花费;
 
     [Header("武器选择按钮设置")]
     public Button 新手木剑选择按钮;
@@ -131,6 +140,7 @@ public class 武器选择UI控制器 : MonoBehaviour
 
     void Start()
     {
+        计算强化花费();
         // 绑定武器选择按钮
         if (新手木剑选择按钮 != null)
         {
@@ -307,7 +317,7 @@ public class 武器选择UI控制器 : MonoBehaviour
             Debug.LogWarning($"武器数据无效: {weaponData?.武器名称 ?? "未知"}");
             return;
         }
-
+        更新基础伤害强化花费文字();
         武器图标.sprite = weaponData.武器Sprite;        
         武器名称.text = $"武器名称：{weaponData.武器名称}";
         旋转速度.text = $"旋转速度：{weaponData.旋转速度}";
@@ -321,7 +331,7 @@ public class 武器选择UI控制器 : MonoBehaviour
         武器介绍.text = $"武器介绍：{weaponData.武器介绍}";
         当前选择的武器数据 = weaponData;
 
-        if (当前选择的武器数据.武器名称 == "新手木剑")
+        if (当前选择的武器数据.武器名称 == "新手木剑" || 当前强化等级 == 5)
         {
             强化基础伤害按钮.gameObject.SetActive(false);
             强化蓄力加成伤害按钮.gameObject.SetActive(false);
@@ -349,13 +359,36 @@ public class 武器选择UI控制器 : MonoBehaviour
 
         Debug.Log($"选择了武器: {weaponData.武器名称}");
     }
+    void 计算强化花费()
+    {
+        if (当前强化等级 == 0) {强化花费 = 一次强化花费; }
+        if (当前强化等级 == 1) {强化花费 = 二次强化花费; }
+        if (当前强化等级 == 2) {强化花费 = 三次强化花费; }
+        if (当前强化等级 == 3) {强化花费 = 四次强化花费; }
+        if (当前强化等级 == 4) {强化花费 = 五次强化花费; }
+    }
+    void 更新基础伤害强化花费文字()
+    {
+        计算强化花费();
+        基础伤害强化花费.text = 强化花费.ToString();
+    }
     /// <summary>
     /// 点击强化按钮时调用
     /// </summary>
     void 强化基础伤害()
     {
         if (当前选择的武器数据 == null) return;
-
+        计算强化花费();
+        if (玩家属性.Instance.扣除金币(强化花费))
+        {
+            提升强化等级();
+        }
+        else
+        {
+            Debug.Log("金币不足！");
+            // 这里可以加一个简单的动画，比如让按钮变红一下
+            return;
+        }
         string currentName = 当前选择的武器数据.武器名称;
 
         // 1. 根据名字修改对应的“源变量”
@@ -400,7 +433,12 @@ public class 武器选择UI控制器 : MonoBehaviour
 
         Debug.Log($"已强化 {currentName}，基础伤害增加了 {基础伤害强化值}");
     }
-
+    public void 提升强化等级()
+    {
+        当前强化等级++;
+        //PlayerPrefs.SetInt(保存强化等级KEY, 当前强化等级);
+        Debug.Log("当前等级: " + 当前强化等级);
+    }
     /// <summary>
     /// 开始游戏：切换到战斗场景
     /// </summary>
