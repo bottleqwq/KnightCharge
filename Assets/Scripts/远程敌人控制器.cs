@@ -243,14 +243,9 @@ public class 远程敌人控制器 : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-        float 随机数 = Random.Range(0f, 100f);
-        // 如果随机数小于等于掉落概率，则生成金币
-        if (随机数 <= 掉落概率)
-        {
-            掉落金币();
-        }
         StopAllCoroutines();
         StartCoroutine(DeathEffectRoutine());
+        祝福管理器.Instance.增加祝福值(玩家属性.Instance.祝福击杀增长值);
     }
     IEnumerator DeathEffectRoutine()
     {

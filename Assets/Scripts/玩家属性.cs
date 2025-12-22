@@ -14,6 +14,9 @@ public class 玩家属性 : MonoBehaviour
     public float 护甲恢复延迟 = 3f;
     public int 最大护甲值 = 5;
     public float 拾取范围 = 0;
+    public float 祝福需要值 = 100f;
+    public float 祝福固定增长值 = 5f;
+    public float 祝福击杀增长值 = 20f;
     public int 当前金币 = 0;
 
     [Header("UI 设置")]
@@ -53,10 +56,6 @@ public class 玩家属性 : MonoBehaviour
         Debug.Log("当前金币: " + 当前金币);
     }
 
-    public void 增加拾取范围(float amount)
-    {
-        拾取范围 += amount;
-    }
     public void 注册金币显示文本(TextMeshProUGUI newTextComponent)
     {
         金币显示文本 = newTextComponent;
