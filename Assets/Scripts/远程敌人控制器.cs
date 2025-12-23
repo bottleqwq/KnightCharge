@@ -36,9 +36,9 @@ public class 远程敌人控制器 : MonoBehaviour
 
     [Header("掉落设置")]
     public GameObject 金币;
+    public GameObject 血瓶;
+    public GameObject 护盾;
 
-    [Range(0, 100)]
-    public float 掉落概率 = 50f;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -284,12 +284,23 @@ public class 远程敌人控制器 : MonoBehaviour
 
         float 随机数 = Random.Range(0f, 100f);
         // 如果随机数小于等于掉落概率，则生成金币
-        if (随机数 <= 掉落概率)
+        if (随机数 <= 玩家属性.Instance.金币爆率)
         {
             掉落金币();
             音频管理器.Instance.播放金币掉落音效();
         }
-
+        float 血瓶随机数 = Random.Range(0f, 100f);
+        if (血瓶随机数 <= 玩家属性.Instance.血瓶爆率)
+        {
+            掉落血瓶();
+            音频管理器.Instance.播放金币掉落音效();
+        }
+        float 护盾随机数 = Random.Range(0f, 100f);
+        if (护盾随机数 <= 玩家属性.Instance.护盾爆率)
+        {
+            掉落护盾();
+            音频管理器.Instance.播放金币掉落音效();
+        }
         Destroy(gameObject);
     }
     void 掉落金币()
@@ -299,6 +310,20 @@ public class 远程敌人控制器 : MonoBehaviour
             // 在敌人当前位置生成金币
             // Quaternion.identity 表示不旋转（或者你可以设置自定义旋转）
             Instantiate(金币, transform.position, Quaternion.identity);
+        }
+    }
+    void 掉落血瓶()
+    {
+        if (血瓶 != null)
+        {
+            Instantiate(血瓶, transform.position, Quaternion.identity);
+        }
+    }
+    void 掉落护盾()
+    {
+        if (护盾 != null)
+        {
+            Instantiate(护盾, transform.position, Quaternion.identity);
         }
     }
 

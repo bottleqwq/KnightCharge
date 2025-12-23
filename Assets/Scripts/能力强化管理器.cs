@@ -9,6 +9,8 @@ public class 能力强化管理器 : MonoBehaviour
     public TextMeshProUGUI 属性名称文本;
     public TextMeshProUGUI 属性数值文本; // 显示 "当前: 100 -> 下一级: 110"
     public TextMeshProUGUI 属性介绍文本;
+    public GameObject 显示界面;
+    public GameObject 提示文字;
 
     [Header("强化操作引用")]
     public Button 强化按钮;
@@ -18,23 +20,53 @@ public class 能力强化管理器 : MonoBehaviour
     public Button 生命值选择按钮;
     public Button 护甲值选择按钮;
     public Button 体力值选择按钮;
+    public Button 护甲恢复延迟选择按钮;
+    public Button 护甲恢复速度选择按钮;
+    public Button 护盾时长选择按钮;
+    public Button 体力值恢复速度选择按钮;
+    public Button 护盾爆率选择按钮;
+    public Button 血瓶爆率选择按钮;
+    public Button 金币爆率选择按钮;
+    public Button 祝福固定增长选择按钮;
+    public Button 祝福击杀增长选择按钮;
     public Button 拾取范围选择按钮;
+    public Button 闪避率选择按钮;
 
     [Header("属性图标资源")]
     public Sprite 生命值Sprite;
     public Sprite 护甲值Sprite;
     public Sprite 体力值Sprite;
+    public Sprite 护甲恢复延迟Sprite;
+    public Sprite 护甲恢复速度Sprite;
+    public Sprite 护盾时长Sprite;
+    public Sprite 体力值恢复速度Sprite;
+    public Sprite 护盾爆率Sprite;
+    public Sprite 血瓶爆率Sprite;
+    public Sprite 金币爆率Sprite;
+    public Sprite 祝福固定增长Sprite;
+    public Sprite 祝福击杀增长Sprite;
     public Sprite 拾取范围Sprite;
+    public Sprite 闪避率Sprite;
 
     [Header("强化数值配置")]
-    public float 生命值每次增加量 = 2f; // 每级加2点血上限
-    public float 护甲值每次增加量 = 1f;   // 每级加1点护甲上限
-    public float 体力值每次增加量 = 10f;  // 每级加10点体力
-    public float 拾取范围增加量 = 0.5f; // 每级加0.5范围
+    public float 生命值每次增加量 = 2f;
+    public float 护甲值每次增加量 = 1f;
+    public float 体力值每次增加量 = 10f;
+    public float 护甲恢复延迟每次增加量 = 1f;
+    public float 护甲恢复速度每次增加量 = 1f;
+    public float 护盾时长每次增加量 = 1f;
+    public float 体力值恢复速度每次增加量 = 1f;
+    public float 护盾爆率每次增加量 = 1f;
+    public float 血瓶爆率每次增加量 = 1f;
+    public float 金币爆率每次增加量 = 1f;
+    public float 祝福固定增长每次增加量 = 1f;
+    public float 祝福击杀增长每次增加量 = 1f;
+    public float 拾取范围增加量 = 0.5f;
+    public float 闪避率每次增加量 = 1f;
 
     [Header("强化花费配置")]
     // 0级升1级花费10，1级升2级花费20，以此类推
-    public int[] 强化价格表 = new int[] { 10, 20, 30, 40, 50 };
+    public int[] 强化价格表 = new int[] { 1, 2, 3, 4, 5 };
     private const int 最大强化等级 = 5;
 
     // 内部常量 Key，用于存取 PlayerPrefs
@@ -49,7 +81,17 @@ public class 能力强化管理器 : MonoBehaviour
     private const string TYPE生命值 = "生命值";
     private const string TYPE护甲值 = "护甲值";
     private const string TYPE体力值 = "体力值";
+    private const string TYPE护甲恢复延迟 = "护甲恢复延迟";
+    private const string TYPE护甲恢复速度 = "护甲恢复速度";
+    private const string TYPE护盾时长 = "护盾时长";
+    private const string TYPE体力值恢复速度 = "体力值恢复速度";
+    private const string TYPE护盾爆率 = "护盾爆率";
+    private const string TYPE血瓶爆率 = "血瓶爆率";
+    private const string TYPE金币爆率 = "金币爆率";
+    private const string TYPE祝福固定增长 = "祝福固定增长";
+    private const string TYPE祝福击杀增长 = "祝福击杀增长";
     private const string TYPE拾取范围 = "拾取范围";
+    private const string TYPE闪避率 = "闪避率";
     void Start()
     {
         // 1. 初始化属性 (非常重要！确保游戏开始时，玩家身上的属性是加上了强化值的)
@@ -64,8 +106,8 @@ public class 能力强化管理器 : MonoBehaviour
         // 3. 绑定强化按钮事件
         if (强化按钮 != null) 强化按钮.onClick.AddListener(执行强化);
 
-        // 4. 默认选中第一项
-        选择生命值();
+        显示界面.gameObject.SetActive(false);
+        提示文字.gameObject.SetActive(true);
     }
     void 初始化玩家属性数值()
     {
@@ -117,6 +159,8 @@ public class 能力强化管理器 : MonoBehaviour
     }
     void 更新UI显示(string name, string desc, Sprite sprite, string saveKey, float currentVal, float increaseAmount)
     {
+        显示界面.gameObject.SetActive(true);
+        提示文字.gameObject.SetActive(false);
         // 1. 基础信息
         属性图标显示.sprite = sprite;
         属性名称文本.text = name;

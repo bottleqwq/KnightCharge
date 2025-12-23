@@ -32,13 +32,13 @@ public class 玩家控制器 : MonoBehaviour
     public Slider 生命值条;
     public TextMeshProUGUI 生命值文本;
 
-    private int 当前生命值;
+    private float 当前生命值;
 
     [Header("护甲系统")]
     public Slider 护甲值条;
     public TextMeshProUGUI 护甲值文本;
 
-    private int 当前护甲值;
+    private float 当前护甲值;
     
     private float 上次受伤时间 = -999f;
     private float 护甲恢复累积值 = 0f; // 用于累积护甲恢复值，避免小数丢失
@@ -50,7 +50,7 @@ public class 玩家控制器 : MonoBehaviour
 
     private Rigidbody2D rb;
     private SpriteRenderer 剑的SpriteRenderer; // 缓存剑的SpriteRenderer
-
+    private Coroutine currentShieldCoroutine;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -336,21 +336,21 @@ public class 玩家控制器 : MonoBehaviour
             护甲值条.value = 当前护甲值;
         }
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (isInvincible) return;
         
         // 记录受伤时间，用于护甲恢复延迟
         上次受伤时间 = Time.time;
         护甲恢复累积值 = 0f; // 重置护甲恢复累积值，重新开始计算恢复延迟
-        
+
         // 优先扣除护甲值，护甲值为0后再扣除生命值
-        int 剩余伤害 = damage;
+        float 剩余伤害 = damage;
         
         if (当前护甲值 > 0)
         {
             // 先扣除护甲值
-            int 护甲扣除 = Mathf.Min(当前护甲值, 剩余伤害);
+            float 护甲扣除 = Mathf.Min(当前护甲值, 剩余伤害);
             当前护甲值 -= 护甲扣除;
             剩余伤害 -= 护甲扣除;
             Debug.Log($"护甲受到伤害: {护甲扣除}, 剩余护甲: {当前护甲值}");
@@ -375,6 +375,42 @@ public class 玩家控制器 : MonoBehaviour
             // UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
+    /// <summary>
+    /// 恢复生命值（由血瓶调用）
+    /// </summary>
+    /// <param name="amount">恢复数量</param>
+    public void 恢复生命(float amount)
+    {
+        // 死亡状态无法回血
+        if (当前生命值 <= 0) return;
+
+        当前生命值 += amount;
+
+        // 确保不超过最大生命值
+        if (玩家属性.Instance != null)
+        {
+            当前生命值 = Mathf.Min(当前生命值, 玩家属性.Instance.最大生命值);
+        }
+
+        Debug.Log($"玩家恢复生命: {amount}, 当前生命: {当前生命值}");
+        UpdateUI(); // 立即刷新UI显示
+    }
+
+    /// <summary>
+    /// 获得临时护盾（由护盾道具调用）
+    /// </summary>
+    /// <param name="duration">无敌持续时间</param>
+    public void 获得临时护盾(float duration)
+    {
+        // 如果当前已经在护盾协程中，先停止它，重新计时
+        if (currentShieldCoroutine != null)
+        {
+            StopCoroutine(currentShieldCoroutine);
+        }
+
+        // 开启新的护盾协程
+        currentShieldCoroutine = StartCoroutine(ShieldInvincibilityRoutine(duration));
+    }
     // 协程：简单的冲刺状态管理
     IEnumerator DashRoutine()
     {
@@ -390,9 +426,30 @@ public class 玩家控制器 : MonoBehaviour
         isInvincible = true;
         // 这里可以让主角闪烁一下
         yield return new WaitForSeconds(1.0f); // 无敌1秒
-        isInvincible = false;
+        // 只有当没有护盾协程在运行时，才取消无敌状态
+        // 避免受伤无敌结束时意外取消了还在持续的护盾无敌
+        if (currentShieldCoroutine == null)
+        {
+            isInvincible = false;
+        }
     }
+    // 护盾道具的长时间无敌
+    IEnumerator ShieldInvincibilityRoutine(float duration)
+    {
+        isInvincible = true;
+        Debug.Log($"<color=cyan>护盾激活！无敌 {duration} 秒</color>");
 
+        // TODO: 这里可以添加护盾特效开启代码（例如生成一个光圈）
+
+        yield return new WaitForSeconds(duration);
+
+        // 护盾时间结束，取消无敌
+        isInvincible = false;
+        currentShieldCoroutine = null; // 清空引用
+        Debug.Log("护盾失效");
+
+        // TODO: 这里可以添加护盾特效关闭代码
+    }
     // 计算伤害：根据蓄力百分比计算实际伤害
     public float CalculateDamage()
     {

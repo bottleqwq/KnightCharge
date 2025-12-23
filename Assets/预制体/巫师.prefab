@@ -172,4 +172,5 @@ MonoBehaviour:
   "\u6B7B\u4EA1\u6DE1\u51FA\u65F6\u95F4": 1
   "\u6B7B\u4EA1\u71C3\u70E7\u989C\u8272": {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   "\u91D1\u5E01": {fileID: 9024037191904546212, guid: 01eba1ec5561a02428caaea390f51604, type: 3}
-  "\u6389\u843D\u6982\u7387": 50
+  "\u8840\u74F6": {fileID: 2334786984839369144, guid: 9d9bb20e7ff2ba947bc71d8df6df7a40, type: 3}
+  "\u62A4\u76FE": {fileID: 3595514446252632840, guid: 3a2c354a86154734d96da441bdd83708, type: 3}

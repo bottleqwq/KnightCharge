@@ -51,7 +51,7 @@ public class 武器选择UI控制器 : MonoBehaviour
     public Button 新手木剑选择按钮;
     public Button 大剑选择按钮;
     public Button 细剑选择按钮;
-    public Button 长矛选择按钮;
+    public Button 长枪选择按钮;
     public Button 锤子选择按钮;
     public Button 镰刀选择按钮;
 
@@ -59,7 +59,7 @@ public class 武器选择UI控制器 : MonoBehaviour
     public Sprite 新手木剑Sprite;
     public Sprite 大剑Sprite;
     public Sprite 细剑Sprite;
-    public Sprite 长矛Sprite;
+    public Sprite 长枪Sprite;
     public Sprite 锤子Sprite;
     public Sprite 镰刀Sprite;
 
@@ -102,18 +102,18 @@ public class 武器选择UI控制器 : MonoBehaviour
     [TextArea]
     public string 细剑_武器介绍;
 
-    [Header("长矛属性")]
-    public float 长矛_旋转速度 = 320f;
-    public float 长矛_最大蓄力时间 = 2.0f;
-    public float 长矛_最小冲刺力度 = 1.0f;
-    public float 长矛_最大冲刺力度 = 10f;
-    public float 长矛_基础伤害 = 12f;
-    public float 长矛_蓄力加成伤害 = 20f;
-    public float 长矛_击退力度 = 12f;
-    public float 长矛_体力消耗 = 10f;
-    public Vector2 长矛_碰撞器尺寸 = new Vector2(0.2f, 0.64f);
+    [Header("长枪属性")]
+    public float 长枪_旋转速度 = 320f;
+    public float 长枪_最大蓄力时间 = 2.0f;
+    public float 长枪_最小冲刺力度 = 1.0f;
+    public float 长枪_最大冲刺力度 = 10f;
+    public float 长枪_基础伤害 = 12f;
+    public float 长枪_蓄力加成伤害 = 20f;
+    public float 长枪_击退力度 = 12f;
+    public float 长枪_体力消耗 = 10f;
+    public Vector2 长枪_碰撞器尺寸 = new Vector2(0.2f, 0.64f);
     [TextArea]
-    public string 长矛_武器介绍;
+    public string 长枪_武器介绍;
 
     [Header("锤子属性")]
     public float 锤子_旋转速度 = 320f;
@@ -142,6 +142,8 @@ public class 武器选择UI控制器 : MonoBehaviour
     public string 镰刀_武器介绍;
 
     [Header("UI设置")]
+    public GameObject 显示界面;
+    public GameObject 提示文字;
     public Button 开始游戏按钮;
     public string 游戏战斗场景名称 = "游戏战斗场景"; // 战斗场景的名称
 
@@ -162,9 +164,9 @@ public class 武器选择UI控制器 : MonoBehaviour
         {
             细剑选择按钮.onClick.AddListener(() => 选择武器(创建细剑数据()));
         }
-        if (长矛选择按钮 != null)
+        if (长枪选择按钮 != null)
         {
-            长矛选择按钮.onClick.AddListener(() => 选择武器(创建长矛数据()));
+            长枪选择按钮.onClick.AddListener(() => 选择武器(创建长枪数据()));
         }
         if (锤子选择按钮 != null)
         {
@@ -195,8 +197,8 @@ public class 武器选择UI控制器 : MonoBehaviour
         }
 
         初始化所有武器数值();
-        // 默认选择新手木剑
-        选择武器(创建新手木剑数据());
+        显示界面.gameObject.SetActive(false);
+        提示文字.gameObject.SetActive(true);
     }
 
     武器数据 创建新手木剑数据()
@@ -208,8 +210,8 @@ public class 武器选择UI控制器 : MonoBehaviour
     武器数据 创建细剑数据()
     { return new 武器数据("细剑", 细剑Sprite) { 旋转速度 = 细剑_旋转速度, 基础伤害 = 细剑_基础伤害, 蓄力加成伤害 = 细剑_蓄力加成伤害, 最大蓄力时间 = 细剑_最大蓄力时间, 最小冲刺力度 = 细剑_最小冲刺力度, 最大冲刺力度 = 细剑_最大冲刺力度, 击退力度 = 细剑_击退力度, 体力消耗 = 细剑_体力消耗, 碰撞器尺寸 = 细剑_碰撞器尺寸, 武器介绍 = 细剑_武器介绍 }; }
 
-    武器数据 创建长矛数据()
-    { return new 武器数据("长矛", 长矛Sprite) { 旋转速度 = 长矛_旋转速度, 基础伤害 = 长矛_基础伤害, 蓄力加成伤害 = 长矛_蓄力加成伤害, 最大蓄力时间 = 长矛_最大蓄力时间, 最小冲刺力度 = 长矛_最小冲刺力度, 最大冲刺力度 = 长矛_最大冲刺力度, 击退力度 = 长矛_击退力度, 体力消耗 = 长矛_体力消耗, 碰撞器尺寸 = 长矛_碰撞器尺寸, 武器介绍 = 长矛_武器介绍 }; }
+    武器数据 创建长枪数据()
+    { return new 武器数据("长枪", 长枪Sprite) { 旋转速度 = 长枪_旋转速度, 基础伤害 = 长枪_基础伤害, 蓄力加成伤害 = 长枪_蓄力加成伤害, 最大蓄力时间 = 长枪_最大蓄力时间, 最小冲刺力度 = 长枪_最小冲刺力度, 最大冲刺力度 = 长枪_最大冲刺力度, 击退力度 = 长枪_击退力度, 体力消耗 = 长枪_体力消耗, 碰撞器尺寸 = 长枪_碰撞器尺寸, 武器介绍 = 长枪_武器介绍 }; }
 
     武器数据 创建锤子数据()
     { return new 武器数据("锤子", 锤子Sprite) { 旋转速度 = 锤子_旋转速度, 基础伤害 = 锤子_基础伤害, 蓄力加成伤害 = 锤子_蓄力加成伤害, 最大蓄力时间 = 锤子_最大蓄力时间, 最小冲刺力度 = 锤子_最小冲刺力度, 最大冲刺力度 = 锤子_最大冲刺力度, 击退力度 = 锤子_击退力度, 体力消耗 = 锤子_体力消耗, 碰撞器尺寸 = 锤子_碰撞器尺寸, 武器介绍 = 锤子_武器介绍 }; }
@@ -270,14 +272,15 @@ public class 武器选择UI控制器 : MonoBehaviour
         最大冲刺力度.text = $"最大冲刺力度：{weaponData.最大冲刺力度}";
         击退力度.text = $"击退力度：{weaponData.击退力度}";
         体力消耗.text = $"体力消耗：{weaponData.体力消耗}";
-        武器介绍.text = $"武器介绍：{weaponData.武器介绍}";
+        武器介绍.text = $"{weaponData.武器介绍}";
 
         武器选择管理器.设置选择的武器(weaponData);
 
 
         // 启用开始按钮
-        if (开始游戏按钮 != null)开始游戏按钮.interactable = true;        
-        
+        if (开始游戏按钮 != null)开始游戏按钮.interactable = true;
+        显示界面.gameObject.SetActive(true);
+        提示文字.gameObject.SetActive(false);
         刷新强化UI状态();
     }
 
@@ -363,7 +366,7 @@ public class 武器选择UI控制器 : MonoBehaviour
             {
                 case "大剑": 大剑_基础伤害 += 基础伤害强化值; break;
                 case "细剑": 细剑_基础伤害 += 基础伤害强化值; break;
-                case "长矛": 长矛_基础伤害 += 基础伤害强化值; break;
+                case "长枪": 长枪_基础伤害 += 基础伤害强化值; break;
                 case "锤子": 锤子_基础伤害 += 基础伤害强化值; break;
                 case "镰刀": 镰刀_基础伤害 += 基础伤害强化值; break;
             }
@@ -403,7 +406,7 @@ public class 武器选择UI控制器 : MonoBehaviour
             {
                 case "大剑": 大剑_蓄力加成伤害 += 蓄力加成伤害强化值; break;
                 case "细剑": 细剑_蓄力加成伤害 += 蓄力加成伤害强化值; break;
-                case "长矛": 长矛_蓄力加成伤害 += 蓄力加成伤害强化值; break;
+                case "长枪": 长枪_蓄力加成伤害 += 蓄力加成伤害强化值; break;
                 case "锤子": 锤子_蓄力加成伤害 += 蓄力加成伤害强化值; break;
                 case "镰刀": 镰刀_蓄力加成伤害 += 蓄力加成伤害强化值; break;
             }
@@ -438,7 +441,7 @@ public class 武器选择UI控制器 : MonoBehaviour
             {
                 case "大剑": 大剑_体力消耗 -= 体力消耗强化值; break;
                 case "细剑": 细剑_体力消耗 -= 体力消耗强化值; break;
-                case "长矛": 长矛_体力消耗 -= 体力消耗强化值; break;
+                case "长枪": 长枪_体力消耗 -= 体力消耗强化值; break;
                 case "锤子": 锤子_体力消耗 -= 体力消耗强化值; break;
                 case "镰刀": 镰刀_体力消耗 -= 体力消耗强化值; break;
             }
@@ -466,7 +469,7 @@ public class 武器选择UI控制器 : MonoBehaviour
             case "新手木剑": 选择武器(创建新手木剑数据()); break;
             case "大剑": 选择武器(创建大剑数据()); break;
             case "细剑": 选择武器(创建细剑数据()); break;
-            case "长矛": 选择武器(创建长矛数据()); break;
+            case "长枪": 选择武器(创建长枪数据()); break;
             case "锤子": 选择武器(创建锤子数据()); break;
             case "镰刀": 选择武器(创建镰刀数据()); break;
         }
@@ -474,7 +477,7 @@ public class 武器选择UI控制器 : MonoBehaviour
     void 初始化所有武器数值()
     {
         // 武器列表（方便遍历，或者你可以手动写一个个if，这里为了简单直接手动列出）
-        string[] weapons = new string[] { "大剑", "细剑", "长矛", "锤子", "镰刀" };
+        string[] weapons = new string[] { "大剑", "细剑", "长枪", "锤子", "镰刀" };
 
         foreach (var weaponName in weapons)
         {
@@ -488,7 +491,7 @@ public class 武器选择UI控制器 : MonoBehaviour
                 {
                     case "大剑": 大剑_基础伤害 += addedDmg; break;
                     case "细剑": 细剑_基础伤害 += addedDmg; break;
-                    case "长矛": 长矛_基础伤害 += addedDmg; break;
+                    case "长枪": 长枪_基础伤害 += addedDmg; break;
                     case "锤子": 锤子_基础伤害 += addedDmg; break;
                     case "镰刀": 镰刀_基础伤害 += addedDmg; break;
                 }
@@ -504,7 +507,7 @@ public class 武器选择UI控制器 : MonoBehaviour
                 {
                     case "大剑": 大剑_蓄力加成伤害 += addedCharge; break;
                     case "细剑": 细剑_蓄力加成伤害 += addedCharge; break;
-                    case "长矛": 长矛_蓄力加成伤害 += addedCharge; break;
+                    case "长枪": 长枪_蓄力加成伤害 += addedCharge; break;
                     case "锤子": 锤子_蓄力加成伤害 += addedCharge; break;
                     case "镰刀": 镰刀_蓄力加成伤害 += addedCharge; break;
                 }
@@ -520,7 +523,7 @@ public class 武器选择UI控制器 : MonoBehaviour
                 {
                     case "大剑": 大剑_体力消耗 -= reducedStamina; break;
                     case "细剑": 细剑_体力消耗 -= reducedStamina; break;
-                    case "长矛": 长矛_体力消耗 -= reducedStamina; break;
+                    case "长枪": 长枪_体力消耗 -= reducedStamina; break;
                     case "锤子": 锤子_体力消耗 -= reducedStamina; break;
                     case "镰刀": 镰刀_体力消耗 -= reducedStamina; break;
                 }
