@@ -61,7 +61,7 @@ public class 能力强化管理器 : MonoBehaviour
     public float 金币爆率每次增加量 = 1f;
     public float 祝福固定增长每次增加量 = 1f;
     public float 祝福击杀增长每次增加量 = 1f;
-    public float 拾取范围增加量 = 0.5f;
+    public float 拾取范围每次增加量 = 0.5f;
     public float 闪避率每次增加量 = 1f;
 
     [Header("强化花费配置")]
@@ -73,7 +73,17 @@ public class 能力强化管理器 : MonoBehaviour
     private const string 生命值等级KEY = "骑士冲锋生命值等级";
     private const string 护甲值等级KEY = "骑士冲锋护甲值等级";
     private const string 体力值等级KEY = "骑士冲锋体力值等级";
+    private const string 护甲恢复延迟等级KEY = "骑士冲锋护甲恢复延迟等级";
+    private const string 护甲恢复速度等级KEY = "骑士冲锋护甲恢复速度等级";
+    private const string 护盾时长等级KEY = "骑士冲锋护盾时长等级";
+    private const string 体力值恢复等级KEY = "骑士冲锋体力值恢复等级";
+    private const string 护盾爆率等级KEY = "骑士冲锋护盾爆率等级";
+    private const string 血瓶爆率等级KEY = "骑士冲锋血瓶爆率等级";
+    private const string 金币爆率等级KEY = "骑士冲锋金币爆率等级";
+    private const string 祝福固定增长等级KEY = "骑士冲锋祝福固定增长等级";
+    private const string 祝福击杀增长等级KEY = "骑士冲锋祝福击杀增长等级";
     private const string 拾取范围等级KEY = "骑士冲锋拾取范围等级";
+    private const string 闪避率等级KEY = "骑士冲锋闪避率等级";
 
     // 当前选中的属性类型（用于判断强化按钮点击后该升级谁）
     private string 当前选择的属性类型 = "";
@@ -101,6 +111,16 @@ public class 能力强化管理器 : MonoBehaviour
         if (生命值选择按钮 != null) 生命值选择按钮.onClick.AddListener(选择生命值);
         if (护甲值选择按钮 != null) 护甲值选择按钮.onClick.AddListener(选择护甲值);
         if (体力值选择按钮 != null) 体力值选择按钮.onClick.AddListener(选择体力值);
+        if (护甲恢复延迟选择按钮 != null) 护甲恢复延迟选择按钮.onClick.AddListener(选择护甲恢复延迟);
+        if (护甲恢复速度选择按钮 != null) 护甲恢复速度选择按钮.onClick.AddListener(选择护甲恢复速度);
+        if (护盾时长选择按钮 != null) 护盾时长选择按钮.onClick.AddListener(选择护盾时长);
+        if (体力值恢复速度选择按钮 != null) 体力值恢复速度选择按钮.onClick.AddListener(选择体力值恢复速度);
+        if (护盾爆率选择按钮 != null) 护盾爆率选择按钮.onClick.AddListener(选择护盾爆率);
+        if (血瓶爆率选择按钮 != null) 血瓶爆率选择按钮.onClick.AddListener(选择血瓶爆率);
+        if (金币爆率选择按钮 != null) 金币爆率选择按钮.onClick.AddListener(选择金币爆率);
+        if (祝福固定增长选择按钮 != null) 祝福固定增长选择按钮.onClick.AddListener(选择祝福固定增长);
+        if (祝福击杀增长选择按钮 != null) 祝福击杀增长选择按钮.onClick.AddListener(选择祝福击杀增长);
+        if (闪避率选择按钮 != null) 闪避率选择按钮.onClick.AddListener(选择闪避率);
         if (拾取范围选择按钮 != null) 拾取范围选择按钮.onClick.AddListener(选择拾取范围);
 
         // 3. 绑定强化按钮事件
@@ -113,21 +133,47 @@ public class 能力强化管理器 : MonoBehaviour
     {
         if (玩家属性.Instance == null) return;
 
-        // 恢复生命值
         int 生命值等级 = PlayerPrefs.GetInt(生命值等级KEY, 0);
         玩家属性.Instance.最大生命值 += (int)(生命值等级 * 生命值每次增加量);
 
-        // 恢复护甲
         int 护甲值等级 = PlayerPrefs.GetInt(护甲值等级KEY, 0);
         玩家属性.Instance.最大护甲值 += (int)(护甲值等级 * 护甲值每次增加量);
 
-        // 恢复体力
         int 体力值等级 = PlayerPrefs.GetInt(体力值等级KEY, 0);
         玩家属性.Instance.最大体力值 += (体力值等级 * 体力值每次增加量);
 
-        // 恢复拾取范围
+        int 护甲恢复延迟等级 = PlayerPrefs.GetInt(护甲恢复延迟等级KEY, 0);
+        玩家属性.Instance.护甲恢复延迟 += (护甲恢复延迟等级 * 护甲恢复延迟每次增加量);
+
+        int 护甲恢复速度等级 = PlayerPrefs.GetInt(护甲恢复速度等级KEY, 0);
+        玩家属性.Instance.护甲恢复速度 += (护甲恢复速度等级 * 护甲恢复速度每次增加量);
+
+        int 护盾时长等级 = PlayerPrefs.GetInt(护盾时长等级KEY, 0);
+        玩家属性.Instance.护盾时长 += (护盾时长等级 * 护盾时长每次增加量);
+
+        int 体力值恢复速度等级 = PlayerPrefs.GetInt(体力值恢复速度等级KEY, 0);
+        玩家属性.Instance.体力值恢复速度 += (体力值恢复速度等级 * 体力值恢复速度每次增加量);
+
+        int 护盾爆率等级 = PlayerPrefs.GetInt(护盾爆率等级KEY, 0);
+        玩家属性.Instance.护盾爆率 += (护盾爆率等级 * 护盾爆率每次增加量);
+
+        int 血瓶爆率等级 = PlayerPrefs.GetInt(血瓶爆率等级KEY, 0);
+        玩家属性.Instance.血瓶爆率 += (血瓶爆率等级 * 血瓶爆率每次增加量);
+
+        int 金币爆率等级 = PlayerPrefs.GetInt(金币爆率等级KEY, 0);
+        玩家属性.Instance.金币爆率 += (金币爆率等级 * 金币爆率每次增加量);
+
+        int 祝福固定增长等级 = PlayerPrefs.GetInt(祝福固定增长等级KEY, 0);
+        玩家属性.Instance.祝福固定增长 += (祝福固定增长等级 * 祝福固定增长每次增加量);
+
+        int 祝福击杀增长等级 = PlayerPrefs.GetInt(祝福击杀增长等级KEY, 0);
+        玩家属性.Instance.祝福击杀增长 += (祝福击杀增长等级 * 祝福击杀增长每次增加量);
+
         int 拾取范围等级 = PlayerPrefs.GetInt(拾取范围等级KEY, 0);
-        玩家属性.Instance.拾取范围 += (拾取范围等级 * 拾取范围增加量);
+        玩家属性.Instance.拾取范围 += (拾取范围等级 * 拾取范围每次增加量);
+
+        int 闪避率等级 = PlayerPrefs.GetInt(闪避率等级KEY, 0);
+        玩家属性.Instance.闪避率 += (闪避率等级 * 闪避率每次增加量);
     }
 
     void 选择生命值()
@@ -155,7 +201,7 @@ public class 能力强化管理器 : MonoBehaviour
     {
         当前选择的属性类型 = TYPE拾取范围;
         更新UI显示("拾取范围", "增加自动吸附金币和道具的范围。", 拾取范围Sprite,
-            拾取范围等级KEY, 玩家属性.Instance.拾取范围, 拾取范围增加量);
+            拾取范围等级KEY, 玩家属性.Instance.拾取范围, 拾取范围每次增加量);
     }
     void 更新UI显示(string name, string desc, Sprite sprite, string saveKey, float currentVal, float increaseAmount)
     {
@@ -223,7 +269,7 @@ public class 能力强化管理器 : MonoBehaviour
                 break;
             case TYPE拾取范围:
                 key = 拾取范围等级KEY;
-                increaseAmt = 拾取范围增加量;
+                increaseAmt = 拾取范围每次增加量;
                 refreshAction = 选择拾取范围;
                 break;
         }

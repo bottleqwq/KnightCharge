@@ -339,7 +339,12 @@ public class 玩家控制器 : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (isInvincible) return;
-        
+        float 闪避 = Random.Range(0f, 100f);
+        if (闪避 <= 玩家属性.Instance.闪避率)
+        {
+            //显示闪避
+            return;
+        }
         // 记录受伤时间，用于护甲恢复延迟
         上次受伤时间 = Time.time;
         护甲恢复累积值 = 0f; // 重置护甲恢复累积值，重新开始计算恢复延迟

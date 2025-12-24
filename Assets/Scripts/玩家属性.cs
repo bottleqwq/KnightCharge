@@ -20,6 +20,7 @@ public class 玩家属性 : MonoBehaviour
     public float 金币爆率 = 50f;
     public float 血瓶爆率 = 50f;
     public float 护盾爆率 = 50f;
+    public float 闪避率 = 5f;
     public int 当前金币 = 0;
 
     [Header("UI 设置")]
