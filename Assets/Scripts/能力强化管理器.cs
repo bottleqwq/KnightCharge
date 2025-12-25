@@ -76,7 +76,7 @@ public class 能力强化管理器 : MonoBehaviour
     private const string 护甲恢复延迟等级KEY = "骑士冲锋护甲恢复延迟等级";
     private const string 护甲恢复速度等级KEY = "骑士冲锋护甲恢复速度等级";
     private const string 护盾时长等级KEY = "骑士冲锋护盾时长等级";
-    private const string 体力值恢复等级KEY = "骑士冲锋体力值恢复等级";
+    private const string 体力值恢复速度等级KEY = "骑士冲锋体力值恢复速度等级";
     private const string 护盾爆率等级KEY = "骑士冲锋护盾爆率等级";
     private const string 血瓶爆率等级KEY = "骑士冲锋血瓶爆率等级";
     private const string 金币爆率等级KEY = "骑士冲锋金币爆率等级";
@@ -179,22 +179,76 @@ public class 能力强化管理器 : MonoBehaviour
     void 选择生命值()
     {
         当前选择的属性类型 = TYPE生命值;
-        更新UI显示("最大生命值", "增加角色的最大生命值上限。", 生命值Sprite,
+        更新UI显示("最大生命值", "增加角色的生命值上限。", 生命值Sprite,
             生命值等级KEY, 玩家属性.Instance.最大生命值, 生命值每次增加量);
     }
 
     void 选择护甲值()
     {
         当前选择的属性类型 = TYPE护甲值;
-        更新UI显示("最大护甲值", "增加角色的护甲值上限，提供更好的防护。", 护甲值Sprite,
+        更新UI显示("最大护甲值", "增加角色的护甲值上限。", 护甲值Sprite,
             护甲值等级KEY, 玩家属性.Instance.最大护甲值, 护甲值每次增加量);
     }
 
     void 选择体力值()
     {
         当前选择的属性类型 = TYPE体力值;
-        更新UI显示("最大体力", "增加冲锋所需的体力上限。", 体力值Sprite,
+        更新UI显示("最大体力值", "增加冲锋所需的体力值上限。", 体力值Sprite,
             体力值等级KEY, 玩家属性.Instance.最大体力值, 体力值每次增加量);
+    }
+    void 选择护甲恢复延迟()
+    {
+        当前选择的属性类型 = TYPE护甲恢复延迟;
+        更新UI显示("护甲恢复延迟", "护甲恢复延迟。", 护甲恢复延迟Sprite,
+            护甲恢复延迟等级KEY, 玩家属性.Instance.护甲恢复延迟, 护甲恢复延迟每次增加量);
+    }
+    void 选择护甲恢复速度()
+    {
+        当前选择的属性类型 = TYPE护甲恢复速度;
+        更新UI显示("护甲恢复速度", "护甲恢复速度。", 护甲恢复速度Sprite,
+            护甲恢复速度等级KEY, 玩家属性.Instance.护甲恢复速度, 护甲恢复速度每次增加量);
+    }
+    void 选择护盾时长()
+    {
+        当前选择的属性类型 = TYPE护盾时长;
+        更新UI显示("护盾时长", "护盾时长。", 护盾时长Sprite,
+            护盾时长等级KEY, 玩家属性.Instance.护盾时长, 护盾时长每次增加量);
+    }
+    void 选择体力值恢复速度()
+    {
+        当前选择的属性类型 = TYPE体力值恢复速度;
+        更新UI显示("体力值恢复速度", "体力值恢复速度。", 体力值恢复速度Sprite,
+            体力值恢复速度等级KEY, 玩家属性.Instance.体力值恢复速度, 体力值恢复速度每次增加量);
+    }
+    void 选择护盾爆率()
+    {
+        当前选择的属性类型 = TYPE护盾爆率;
+        更新UI显示("护盾爆率", "护盾爆率。", 护盾爆率Sprite,
+            护盾爆率等级KEY, 玩家属性.Instance.护盾爆率, 护盾爆率每次增加量);
+    }
+    void 选择血瓶爆率()
+    {
+        当前选择的属性类型 = TYPE血瓶爆率;
+        更新UI显示("血瓶爆率", "血瓶爆率。", 血瓶爆率Sprite,
+            血瓶爆率等级KEY, 玩家属性.Instance.血瓶爆率, 血瓶爆率每次增加量);
+    }
+    void 选择金币爆率()
+    {
+        当前选择的属性类型 = TYPE金币爆率;
+        更新UI显示("金币爆率", "金币爆率。", 金币爆率Sprite,
+            金币爆率等级KEY, 玩家属性.Instance.金币爆率, 金币爆率每次增加量);
+    }
+    void 选择祝福固定增长()
+    {
+        当前选择的属性类型 = TYPE祝福固定增长;
+        更新UI显示("祝福固定增长", "祝福固定增长。", 祝福固定增长Sprite,
+            祝福固定增长等级KEY, 玩家属性.Instance.祝福固定增长, 祝福固定增长每次增加量);
+    }
+    void 选择祝福击杀增长()
+    {
+        当前选择的属性类型 = TYPE祝福击杀增长;
+        更新UI显示("祝福击杀增长", "祝福击杀增长。", 祝福击杀增长Sprite,
+            祝福击杀增长等级KEY, 玩家属性.Instance.祝福击杀增长, 祝福击杀增长每次增加量);
     }
 
     void 选择拾取范围()
@@ -202,6 +256,12 @@ public class 能力强化管理器 : MonoBehaviour
         当前选择的属性类型 = TYPE拾取范围;
         更新UI显示("拾取范围", "增加自动吸附金币和道具的范围。", 拾取范围Sprite,
             拾取范围等级KEY, 玩家属性.Instance.拾取范围, 拾取范围每次增加量);
+    }
+    void 选择闪避率()
+    {
+        当前选择的属性类型 = TYPE闪避率;
+        更新UI显示("闪避率", "闪避率。", 闪避率Sprite,
+            闪避率等级KEY, 玩家属性.Instance.闪避率, 闪避率每次增加量);
     }
     void 更新UI显示(string name, string desc, Sprite sprite, string saveKey, float currentVal, float increaseAmount)
     {
@@ -267,10 +327,60 @@ public class 能力强化管理器 : MonoBehaviour
                 increaseAmt = 体力值每次增加量;
                 refreshAction = 选择体力值;
                 break;
+            case TYPE护甲恢复延迟:
+                key = 护甲恢复延迟等级KEY;
+                increaseAmt = 护甲恢复延迟每次增加量;
+                refreshAction = 选择护甲恢复延迟;
+                break;
+            case TYPE护甲恢复速度:
+                key = 护甲恢复速度等级KEY;
+                increaseAmt = 护甲恢复速度每次增加量;
+                refreshAction = 选择护甲恢复速度;
+                break;
+            case TYPE护盾时长:
+                key = 护盾时长等级KEY;
+                increaseAmt = 护盾时长每次增加量;
+                refreshAction = 选择护盾时长;
+                break;
+            case TYPE体力值恢复速度:
+                key = 体力值恢复速度等级KEY;
+                increaseAmt = 体力值恢复速度每次增加量;
+                refreshAction = 选择体力值恢复速度;
+                break;
+            case TYPE护盾爆率:
+                key = 护盾爆率等级KEY;
+                increaseAmt = 护盾爆率每次增加量;
+                refreshAction = 选择护盾爆率;
+                break;
+            case TYPE血瓶爆率:
+                key = 血瓶爆率等级KEY;
+                increaseAmt = 血瓶爆率每次增加量;
+                refreshAction = 选择血瓶爆率;
+                break;
+            case TYPE金币爆率:
+                key = 金币爆率等级KEY;
+                increaseAmt = 金币爆率每次增加量;
+                refreshAction = 选择金币爆率;
+                break;
+            case TYPE祝福固定增长:
+                key = 祝福固定增长等级KEY;
+                increaseAmt = 祝福固定增长每次增加量;
+                refreshAction = 选择祝福固定增长;
+                break;
+            case TYPE祝福击杀增长:
+                key = 祝福击杀增长等级KEY;
+                increaseAmt = 祝福击杀增长每次增加量;
+                refreshAction = 选择祝福击杀增长;
+                break;
             case TYPE拾取范围:
                 key = 拾取范围等级KEY;
                 increaseAmt = 拾取范围每次增加量;
                 refreshAction = 选择拾取范围;
+                break;
+            case TYPE闪避率:
+                key = 闪避率等级KEY;
+                increaseAmt = 闪避率每次增加量;
+                refreshAction = 选择闪避率;
                 break;
         }
 
@@ -285,10 +395,20 @@ public class 能力强化管理器 : MonoBehaviour
             // 4. 实际修改玩家属性 (直接修改 Instance)
             switch (当前选择的属性类型)
             {
-                case TYPE生命值: 玩家属性.Instance.最大生命值 += (int)increaseAmt; break;
-                case TYPE护甲值: 玩家属性.Instance.最大护甲值 += (int)increaseAmt; break;
+                case TYPE生命值: 玩家属性.Instance.最大生命值 += increaseAmt; break;
+                case TYPE护甲值: 玩家属性.Instance.最大护甲值 += increaseAmt; break;
                 case TYPE体力值: 玩家属性.Instance.最大体力值 += increaseAmt; break;
+                case TYPE护甲恢复延迟: 玩家属性.Instance.护甲恢复延迟 += increaseAmt; break;
+                case TYPE护甲恢复速度: 玩家属性.Instance.护甲恢复速度 += increaseAmt; break;
+                case TYPE护盾时长: 玩家属性.Instance.护盾时长 += increaseAmt; break;
+                case TYPE体力值恢复速度: 玩家属性.Instance.体力值恢复速度 += increaseAmt; break;
+                case TYPE护盾爆率: 玩家属性.Instance.护盾爆率 += increaseAmt; break;
+                case TYPE血瓶爆率: 玩家属性.Instance.血瓶爆率 += increaseAmt; break;
+                case TYPE金币爆率: 玩家属性.Instance.金币爆率 += increaseAmt; break;
+                case TYPE祝福固定增长: 玩家属性.Instance.祝福固定增长 += increaseAmt; break;
+                case TYPE祝福击杀增长: 玩家属性.Instance.祝福击杀增长 += increaseAmt; break;
                 case TYPE拾取范围: 玩家属性.Instance.拾取范围 += increaseAmt; break;
+                case TYPE闪避率: 玩家属性.Instance.闪避率 += increaseAmt; break;
             }
 
             // 5. 保存等级

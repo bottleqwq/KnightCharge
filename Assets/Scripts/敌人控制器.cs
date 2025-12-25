@@ -198,7 +198,7 @@ public class 敌人控制器 : MonoBehaviour
         isDead = true;
         StopAllCoroutines();
         StartCoroutine(DeathEffectRoutine());
-        祝福管理器.Instance.增加祝福值(玩家属性.Instance.祝福击杀增长值);
+        祝福管理器.Instance.增加祝福值(玩家属性.Instance.祝福击杀增长);
     }
 
     IEnumerator DeathEffectRoutine()

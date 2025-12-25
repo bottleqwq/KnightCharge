@@ -251,7 +251,7 @@ public class 玩家控制器 : MonoBehaviour
         // 如果体力没满，就增加
         if (当前体力值 < 玩家属性.Instance.最大体力值)
         {
-            当前体力值 += 玩家属性.Instance.体力恢复 * Time.deltaTime;
+            当前体力值 += 玩家属性.Instance.体力值恢复速度 * Time.deltaTime;
             // 确保不超过上限
             当前体力值 = Mathf.Min(当前体力值, 玩家属性.Instance.最大体力值);
             UpdateUI();

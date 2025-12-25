@@ -40,7 +40,7 @@ public class 祝福管理器 : MonoBehaviour
         if (isPaused) return;
 
         // 1. 每秒增加 5 点 (使用 Time.deltaTime 实现平滑增长)
-        增加祝福值(玩家属性.Instance.祝福固定增长值 * Time.deltaTime);
+        增加祝福值(玩家属性.Instance.祝福固定增长 * Time.deltaTime);
     }
 
     // 增加祝福值的通用方法

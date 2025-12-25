@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class 护盾 : MonoBehaviour
 {
-    public float 无敌持续时间 = 5f; // 拾取后无敌5秒
     public float 飞行速度 = 3f;
     public float 飞行加速度 = 3f;
     public float 存在时间 = 10f;
@@ -59,7 +58,7 @@ public class 护盾 : MonoBehaviour
         玩家控制器 player = 玩家位置.GetComponent<玩家控制器>();
         if (player != null)
         {
-            player.获得临时护盾(无敌持续时间);
+            player.获得临时护盾(玩家属性.Instance.护盾时长);
         }
 
         音频管理器.Instance.播放金币音效();
