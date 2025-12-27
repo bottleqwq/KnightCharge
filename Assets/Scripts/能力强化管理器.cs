@@ -29,7 +29,7 @@ public class 能力强化管理器 : MonoBehaviour
     public Button 金币爆率选择按钮;
     public Button 祝福固定增长选择按钮;
     public Button 祝福击杀增长选择按钮;
-    public Button 拾取范围选择按钮;
+    public Button 生命窃取率选择按钮;
     public Button 闪避率选择按钮;
 
     [Header("属性图标资源")]
@@ -45,7 +45,7 @@ public class 能力强化管理器 : MonoBehaviour
     public Sprite 金币爆率Sprite;
     public Sprite 祝福固定增长Sprite;
     public Sprite 祝福击杀增长Sprite;
-    public Sprite 拾取范围Sprite;
+    public Sprite 生命窃取率Sprite;
     public Sprite 闪避率Sprite;
 
     [Header("强化数值配置")]
@@ -61,7 +61,7 @@ public class 能力强化管理器 : MonoBehaviour
     public float 金币爆率每次增加量 = 1f;
     public float 祝福固定增长每次增加量 = 1f;
     public float 祝福击杀增长每次增加量 = 1f;
-    public float 拾取范围每次增加量 = 0.5f;
+    public float 生命窃取率每次增加量 = 0.5f;
     public float 闪避率每次增加量 = 1f;
 
     [Header("强化花费配置")]
@@ -82,7 +82,7 @@ public class 能力强化管理器 : MonoBehaviour
     private const string 金币爆率等级KEY = "骑士冲锋金币爆率等级";
     private const string 祝福固定增长等级KEY = "骑士冲锋祝福固定增长等级";
     private const string 祝福击杀增长等级KEY = "骑士冲锋祝福击杀增长等级";
-    private const string 拾取范围等级KEY = "骑士冲锋拾取范围等级";
+    private const string 生命窃取率等级KEY = "骑士冲锋生命窃取率等级";
     private const string 闪避率等级KEY = "骑士冲锋闪避率等级";
 
     // 当前选中的属性类型（用于判断强化按钮点击后该升级谁）
@@ -100,7 +100,7 @@ public class 能力强化管理器 : MonoBehaviour
     private const string TYPE金币爆率 = "金币爆率";
     private const string TYPE祝福固定增长 = "祝福固定增长";
     private const string TYPE祝福击杀增长 = "祝福击杀增长";
-    private const string TYPE拾取范围 = "拾取范围";
+    private const string TYPE生命窃取率 = "生命窃取率";
     private const string TYPE闪避率 = "闪避率";
     void Start()
     {
@@ -121,7 +121,7 @@ public class 能力强化管理器 : MonoBehaviour
         if (祝福固定增长选择按钮 != null) 祝福固定增长选择按钮.onClick.AddListener(选择祝福固定增长);
         if (祝福击杀增长选择按钮 != null) 祝福击杀增长选择按钮.onClick.AddListener(选择祝福击杀增长);
         if (闪避率选择按钮 != null) 闪避率选择按钮.onClick.AddListener(选择闪避率);
-        if (拾取范围选择按钮 != null) 拾取范围选择按钮.onClick.AddListener(选择拾取范围);
+        if (生命窃取率选择按钮 != null) 生命窃取率选择按钮.onClick.AddListener(选择生命窃取率);
 
         // 3. 绑定强化按钮事件
         if (强化按钮 != null) 强化按钮.onClick.AddListener(执行强化);
@@ -169,8 +169,8 @@ public class 能力强化管理器 : MonoBehaviour
         int 祝福击杀增长等级 = PlayerPrefs.GetInt(祝福击杀增长等级KEY, 0);
         玩家属性.Instance.祝福击杀增长 += (祝福击杀增长等级 * 祝福击杀增长每次增加量);
 
-        int 拾取范围等级 = PlayerPrefs.GetInt(拾取范围等级KEY, 0);
-        玩家属性.Instance.拾取范围 += (拾取范围等级 * 拾取范围每次增加量);
+        int 生命窃取率等级 = PlayerPrefs.GetInt(生命窃取率等级KEY, 0);
+        玩家属性.Instance.生命窃取率 += (生命窃取率等级 * 生命窃取率每次增加量);
 
         int 闪避率等级 = PlayerPrefs.GetInt(闪避率等级KEY, 0);
         玩家属性.Instance.闪避率 += (闪避率等级 * 闪避率每次增加量);
@@ -251,11 +251,11 @@ public class 能力强化管理器 : MonoBehaviour
             祝福击杀增长等级KEY, 玩家属性.Instance.祝福击杀增长, 祝福击杀增长每次增加量);
     }
 
-    void 选择拾取范围()
+    void 选择生命窃取率()
     {
-        当前选择的属性类型 = TYPE拾取范围;
-        更新UI显示("拾取范围", "增加自动吸附金币和道具的范围。", 拾取范围Sprite,
-            拾取范围等级KEY, 玩家属性.Instance.拾取范围, 拾取范围每次增加量);
+        当前选择的属性类型 = TYPE生命窃取率;
+        更新UI显示("生命窃取率", "增加攻击敌人后恢复自身生命值的概率", 生命窃取率Sprite,
+            生命窃取率等级KEY, 玩家属性.Instance.生命窃取率, 生命窃取率每次增加量);
     }
     void 选择闪避率()
     {
@@ -372,10 +372,10 @@ public class 能力强化管理器 : MonoBehaviour
                 increaseAmt = 祝福击杀增长每次增加量;
                 refreshAction = 选择祝福击杀增长;
                 break;
-            case TYPE拾取范围:
-                key = 拾取范围等级KEY;
-                increaseAmt = 拾取范围每次增加量;
-                refreshAction = 选择拾取范围;
+            case TYPE生命窃取率:
+                key = 生命窃取率等级KEY;
+                increaseAmt = 生命窃取率每次增加量;
+                refreshAction = 选择生命窃取率;
                 break;
             case TYPE闪避率:
                 key = 闪避率等级KEY;
@@ -407,7 +407,7 @@ public class 能力强化管理器 : MonoBehaviour
                 case TYPE金币爆率: 玩家属性.Instance.金币爆率 += increaseAmt; break;
                 case TYPE祝福固定增长: 玩家属性.Instance.祝福固定增长 += increaseAmt; break;
                 case TYPE祝福击杀增长: 玩家属性.Instance.祝福击杀增长 += increaseAmt; break;
-                case TYPE拾取范围: 玩家属性.Instance.拾取范围 += increaseAmt; break;
+                case TYPE生命窃取率: 玩家属性.Instance.生命窃取率 += increaseAmt; break;
                 case TYPE闪避率: 玩家属性.Instance.闪避率 += increaseAmt; break;
             }
 

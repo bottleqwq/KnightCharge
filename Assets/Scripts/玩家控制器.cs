@@ -43,6 +43,9 @@ public class 玩家控制器 : MonoBehaviour
     private float 上次受伤时间 = -999f;
     private float 护甲恢复累积值 = 0f; // 用于累积护甲恢复值，避免小数丢失
 
+    [Header("战斗手感")]
+    public float 命中反冲力 = 3f;
+
     [Header("状态 (只读)")]
     public bool isAiming = false; // 是否正在瞄准(停止旋转)
     public bool isDashing = false; // 是否正在冲刺
@@ -380,6 +383,25 @@ public class 玩家控制器 : MonoBehaviour
             // UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
+
+    /// <summary>
+    /// 当剑击中敌人时调用此方法
+    /// </summary>
+    public void 触发攻击命中反馈()
+    {
+        // 1. 立即停止当前的冲锋动量
+        rb.velocity = Vector2.zero;
+
+        // 2. 结束冲刺状态（可选，视设计而定，建议结束以防止后续逻辑干扰）
+        isDashing = false;
+
+        // 3. 施加反冲力 (向剑指向的相反方向)
+        // 剑的旋转轴.right 是剑的攻击方向，取反即为后退方向
+        Vector2 recoilDir = -剑的旋转轴.right;
+        rb.AddForce(recoilDir * 命中反冲力, ForceMode2D.Impulse);
+
+        Debug.Log("攻击命中！执行刹车与反冲。");
+    }
     /// <summary>
     /// 恢复生命值（由血瓶调用）
     /// </summary>
@@ -458,7 +480,6 @@ public class 玩家控制器 : MonoBehaviour
     // 计算伤害：根据蓄力百分比计算实际伤害
     public float CalculateDamage()
     {
-        // 伤害 = 基础伤害 + (蓄力百分比 * 蓄力加成伤害)
-        return 基础伤害 + (上次蓄力百分比 * 蓄力加成伤害);
+        return 基础伤害 + 玩家属性.Instance.基础伤害增加值 + (上次蓄力百分比 * (蓄力加成伤害 + 玩家属性.Instance.蓄力伤害增加值));
     }
 }

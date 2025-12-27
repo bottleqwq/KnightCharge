@@ -124,6 +124,12 @@ public class 敌人控制器 : MonoBehaviour
 
                     // 执行伤害
                     TakeDamage(damage, knockbackDir, chargePercent, knockbackForce);
+                    float 吸血随机数 = Random.Range(0f, 100f);
+                    if (吸血随机数 <= 玩家属性.Instance.生命窃取率)
+                    {
+                        playerScript.恢复生命(玩家属性.Instance.生命窃取值);
+                    }
+                    playerScript.触发攻击命中反馈();
                     上次受到伤害时间 = Time.time; // 更新上次受到伤害的时间
                 }
             }

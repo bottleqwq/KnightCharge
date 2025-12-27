@@ -8,20 +8,24 @@ public class 玩家属性 : MonoBehaviour
 
     [Header("属性")]
     public float 最大体力值 = 100f;
-    public float 体力值恢复速度 = 1f;
-    public float 最大生命值 = 10;
-    public float 护甲恢复速度 = 1f;
-    public float 护甲恢复延迟 = 3f;
+    public float 体力值恢复速度 = 5f;
+    public float 最大生命值 = 10f;
+    public float 护甲恢复速度 = 0.3f;
+    public float 护甲恢复延迟 = 5f;
     public float 最大护甲值 = 5;
-    public float 拾取范围 = 0;
+    public float 拾取范围 = 1;
     public float 祝福需要值 = 1000f;
     public float 祝福固定增长 = 5f;
     public float 祝福击杀增长 = 20f;
     public float 金币爆率 = 50f;
     public float 血瓶爆率 = 50f;
     public float 护盾爆率 = 50f;
-    public float 护盾时长 = 1f;
+    public float 护盾时长 = 3f;
     public float 闪避率 = 5f;
+    public float 生命窃取率 = 5f;
+    public float 生命窃取值 = 1f;
+    public float 基础伤害增加值 = 0f;
+    public float 蓄力伤害增加值 = 0f;
     public int 当前金币 = 0;
 
     [Header("UI 设置")]

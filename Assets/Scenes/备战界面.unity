@@ -1088,7 +1088,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 215208460}
-  - component: {fileID: 215208459}
+  - component: {fileID: 215208461}
   m_Layer: 0
   m_Name: "\u73A9\u5BB6\u5C5E\u6027\u7BA1\u7406\u5668"
   m_TagString: Untagged
@@ -1096,35 +1096,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &215208459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 215208458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4e2ab9370630641864a99178c2d91a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  "\u6700\u5927\u4F53\u529B\u503C": 100
-  "\u4F53\u529B\u503C\u6062\u590D\u901F\u5EA6": 1
-  "\u6700\u5927\u751F\u547D\u503C": 10
-  "\u62A4\u7532\u6062\u590D\u901F\u5EA6": 1
-  "\u62A4\u7532\u6062\u590D\u5EF6\u8FDF": 3
-  "\u6700\u5927\u62A4\u7532\u503C": 5
-  "\u62FE\u53D6\u8303\u56F4": 1
-  "\u795D\u798F\u9700\u8981\u503C": 1000
-  "\u795D\u798F\u56FA\u5B9A\u589E\u957F": 5
-  "\u795D\u798F\u51FB\u6740\u589E\u957F": 20
-  "\u91D1\u5E01\u7206\u7387": 50
-  "\u8840\u74F6\u7206\u7387": 50
-  "\u62A4\u76FE\u7206\u7387": 50
-  "\u62A4\u76FE\u65F6\u957F": 1
-  "\u95EA\u907F\u7387": 5
-  "\u5F53\u524D\u91D1\u5E01": 0
-  "\u91D1\u5E01\u663E\u793A\u6587\u672C": {fileID: 0}
 --- !u!4 &215208460
 Transform:
   m_ObjectHideFlags: 0
@@ -1140,6 +1111,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &215208461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215208458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4e2ab9370630641864a99178c2d91a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "\u6700\u5927\u4F53\u529B\u503C": 100
+  "\u4F53\u529B\u503C\u6062\u590D\u901F\u5EA6": 5
+  "\u6700\u5927\u751F\u547D\u503C": 10
+  "\u62A4\u7532\u6062\u590D\u901F\u5EA6": 0.3
+  "\u62A4\u7532\u6062\u590D\u5EF6\u8FDF": 5
+  "\u6700\u5927\u62A4\u7532\u503C": 5
+  "\u62FE\u53D6\u8303\u56F4": 1
+  "\u795D\u798F\u9700\u8981\u503C": 1000
+  "\u795D\u798F\u56FA\u5B9A\u589E\u957F": 5
+  "\u795D\u798F\u51FB\u6740\u589E\u957F": 20
+  "\u91D1\u5E01\u7206\u7387": 50
+  "\u8840\u74F6\u7206\u7387": 50
+  "\u62A4\u76FE\u7206\u7387": 50
+  "\u62A4\u76FE\u65F6\u957F": 3
+  "\u95EA\u907F\u7387": 5
+  "\u751F\u547D\u7A83\u53D6\u7387": 5
+  "\u751F\u547D\u7A83\u53D6\u503C": 1
+  "\u57FA\u7840\u4F24\u5BB3\u589E\u52A0\u503C": 0
+  "\u84C4\u529B\u4F24\u5BB3\u589E\u52A0\u503C": 0
+  "\u5F53\u524D\u91D1\u5E01": 0
+  "\u91D1\u5E01\u663E\u793A\u6587\u672C": {fileID: 0}
 --- !u!1 &219162736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2975,11 +2979,11 @@ MonoBehaviour:
   "\u7EC6\u5251_\u6B66\u5668\u4ECB\u7ECD": "\u7EC6\u5251\u9002\u5408\u5251\u672F\u9AD8\u8D85\u7684\u4EBA\u4F7F\u7528\uFF0C\u867D\u7136\u5251\u8EAB\u7EA4\u7EC6\uFF0C\u4F46\u80FD\u9020\u6210\u6781\u81F4\u7684\u4F24\u5BB3"
   "\u957F\u67AA_\u65CB\u8F6C\u901F\u5EA6": 320
   "\u957F\u67AA_\u6700\u5927\u84C4\u529B\u65F6\u95F4": 2
-  "\u957F\u67AA_\u6700\u5C0F\u51B2\u523A\u529B\u5EA6": 1
-  "\u957F\u67AA_\u6700\u5927\u51B2\u523A\u529B\u5EA6": 10
+  "\u957F\u67AA_\u6700\u5C0F\u51B2\u523A\u529B\u5EA6": 30
+  "\u957F\u67AA_\u6700\u5927\u51B2\u523A\u529B\u5EA6": 60
   "\u957F\u67AA_\u57FA\u7840\u4F24\u5BB3": 12
   "\u957F\u67AA_\u84C4\u529B\u52A0\u6210\u4F24\u5BB3": 20
-  "\u957F\u67AA_\u51FB\u9000\u529B\u5EA6": 12
+  "\u957F\u67AA_\u51FB\u9000\u529B\u5EA6": 20
   "\u957F\u67AA_\u4F53\u529B\u6D88\u8017": 10
   "\u957F\u67AA_\u78B0\u649E\u5668\u5C3A\u5BF8": {x: 0.2, y: 0.64}
   "\u957F\u67AA_\u6B66\u5668\u4ECB\u7ECD": "\u957F\u67AA\u62E5\u6709\u6781\u81F4\u7684\u51B2\u523A\u529B\u5EA6\u548C\u51FB\u9000\u529B\u5EA6\uFF0C\u4F7F\u7528\u8FD9\u628A\u6B66\u5668\u52C7\u6562\u51B2\u950B\u5427\uFF01"
@@ -3035,7 +3039,7 @@ GameObject:
   - component: {fileID: 809390862}
   - component: {fileID: 809390861}
   m_Layer: 5
-  m_Name: "\u62FE\u53D6\u8303\u56F4\u5F3A\u5316"
+  m_Name: "\u751F\u547D\u7A83\u53D6\u7387\u5F3A\u5316"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3124,7 +3128,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4cf932a2ef19cfd40af0e00aa991c743, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 37ad73d218fbe2340a2f0b9c3f1e99f9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7087,7 +7091,7 @@ MonoBehaviour:
   "\u91D1\u5E01\u7206\u7387\u9009\u62E9\u6309\u94AE": {fileID: 1291246520}
   "\u795D\u798F\u56FA\u5B9A\u589E\u957F\u9009\u62E9\u6309\u94AE": {fileID: 1121433205}
   "\u795D\u798F\u51FB\u6740\u589E\u957F\u9009\u62E9\u6309\u94AE": {fileID: 2029959463}
-  "\u62FE\u53D6\u8303\u56F4\u9009\u62E9\u6309\u94AE": {fileID: 809390861}
+  "\u751F\u547D\u7A83\u53D6\u7387\u9009\u62E9\u6309\u94AE": {fileID: 809390861}
   "\u95EA\u907F\u7387\u9009\u62E9\u6309\u94AE": {fileID: 1217753000}
   "\u751F\u547D\u503CSprite": {fileID: 21300000, guid: 077ca9efb22b85c44add930e33c6dad7, type: 3}
   "\u62A4\u7532\u503CSprite": {fileID: 21300000, guid: 2d57919c3ad1d8d409b594597b979de3, type: 3}
@@ -7101,7 +7105,7 @@ MonoBehaviour:
   "\u91D1\u5E01\u7206\u7387Sprite": {fileID: 21300000, guid: 4f3529de9cc1edd40804f729d2c7de6a, type: 3}
   "\u795D\u798F\u56FA\u5B9A\u589E\u957FSprite": {fileID: 21300000, guid: b0e0a467044d5f44ab3091dba06830c1, type: 3}
   "\u795D\u798F\u51FB\u6740\u589E\u957FSprite": {fileID: 21300000, guid: 13a0e69c2596831428430307ddce4741, type: 3}
-  "\u62FE\u53D6\u8303\u56F4Sprite": {fileID: 21300000, guid: 4cf932a2ef19cfd40af0e00aa991c743, type: 3}
+  "\u751F\u547D\u7A83\u53D6\u7387Sprite": {fileID: 21300000, guid: 37ad73d218fbe2340a2f0b9c3f1e99f9, type: 3}
   "\u95EA\u907F\u7387Sprite": {fileID: 21300000, guid: c145edfb7b72ea743896112ef3d3636c, type: 3}
   "\u751F\u547D\u503C\u6BCF\u6B21\u589E\u52A0\u91CF": 2
   "\u62A4\u7532\u503C\u6BCF\u6B21\u589E\u52A0\u91CF": 1
@@ -7115,7 +7119,7 @@ MonoBehaviour:
   "\u91D1\u5E01\u7206\u7387\u6BCF\u6B21\u589E\u52A0\u91CF": 1
   "\u795D\u798F\u56FA\u5B9A\u589E\u957F\u6BCF\u6B21\u589E\u52A0\u91CF": 1
   "\u795D\u798F\u51FB\u6740\u589E\u957F\u6BCF\u6B21\u589E\u52A0\u91CF": 1
-  "\u62FE\u53D6\u8303\u56F4\u6BCF\u6B21\u589E\u52A0\u91CF": 0.5
+  "\u751F\u547D\u7A83\u53D6\u7387\u6BCF\u6B21\u589E\u52A0\u91CF": 0.5
   "\u95EA\u907F\u7387\u6BCF\u6B21\u589E\u52A0\u91CF": 1
   "\u5F3A\u5316\u4EF7\u683C\u8868": 0100000002000000030000000400000005000000
 --- !u!4 &1754187624
