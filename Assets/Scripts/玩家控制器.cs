@@ -172,6 +172,7 @@ public class 玩家控制器 : MonoBehaviour
     // 1. 处理输入 (支持鼠标/触摸)
     void HandleInput()
     {
+        if (InputUtils.IsClickingUI()) return; // 如果在UI上，停止执行
         // 1. 按下：检查体力是否足够
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
@@ -217,7 +218,7 @@ public class 玩家控制器 : MonoBehaviour
         if (!isAiming)
         {
             // 围绕 Z 轴旋转 WeaponPivot
-            剑的旋转轴.Rotate(Vector3.forward * 旋转速度 * Time.deltaTime);
+            剑的旋转轴.Rotate(Vector3.forward * (旋转速度 + 玩家属性.Instance.旋转速度修正值) * Time.deltaTime);
         }
     }
 
@@ -232,7 +233,7 @@ public class 玩家控制器 : MonoBehaviour
         上次蓄力百分比 = 当前蓄力时间 / 最大蓄力时间;
 
         // 根据百分比计算实际力度 (Lerp 在最小和最大力度之间插值)
-        float finalForce = Mathf.Lerp(最小冲刺力度, 最大冲刺力度, 上次蓄力百分比);
+        float finalForce = Mathf.Lerp(最小冲刺力度 + 玩家属性.Instance.冲刺力度增加值, 最大冲刺力度 + 玩家属性.Instance.冲刺力度增加值, 上次蓄力百分比);
 
         // 确定方向：剑目前相对于 Pivot 的右方向
         // 因为 Sword 是 WeaponPivot 的子物体，且 WeaponPivot 在旋转，

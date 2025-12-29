@@ -28,8 +28,8 @@ public class 武器选择UI控制器 : MonoBehaviour
 
     // 分别显示花费的文本
     public TextMeshProUGUI 基础伤害强化花费;
-    public TextMeshProUGUI 蓄力伤害强化花费; // 建议你在Unity里也把这个绑定上
-    public TextMeshProUGUI 体力消耗强化花费; // 建议你在Unity里也把这个绑定上
+    public TextMeshProUGUI 蓄力伤害强化花费;
+    public TextMeshProUGUI 体力消耗强化花费;
 
     [Header("强化数值配置")]
     public float 基础伤害强化值 = 5f;
@@ -62,6 +62,21 @@ public class 武器选择UI控制器 : MonoBehaviour
     public Sprite 长枪Sprite;
     public Sprite 锤子Sprite;
     public Sprite 镰刀Sprite;
+
+    [Header("解锁系统设置")]
+    public GameObject 解锁面板;
+    public Button 购买解锁按钮;
+    public TextMeshProUGUI 解锁价格文本;
+
+    [Header("武器解锁价格配置")]
+    public int 大剑_解锁价格 = 20;
+    public int 细剑_解锁价格 = 20;
+    public int 长枪_解锁价格 = 20;
+    public int 锤子_解锁价格 = 20;
+    public int 镰刀_解锁价格 = 20;
+    // 新手木剑默认解锁，不需要价格
+
+    private const string PREF_UNLOCK_PREFIX = "武器解锁"; // 保存数据的Key前缀
 
     [Header("新手木剑属性")]
     public float 新手木剑_旋转速度 = 250f;
@@ -182,6 +197,11 @@ public class 武器选择UI控制器 : MonoBehaviour
             开始游戏按钮.onClick.AddListener(开始游戏);
             开始游戏按钮.interactable = false;
         }
+        // 绑定购买解锁按钮
+        if (购买解锁按钮 != null)
+        {
+            购买解锁按钮.onClick.AddListener(点击购买解锁);
+        }
 
         if (强化基础伤害按钮 != null)
         {
@@ -197,8 +217,9 @@ public class 武器选择UI控制器 : MonoBehaviour
         }
 
         初始化所有武器数值();
-        显示界面.gameObject.SetActive(false);
-        提示文字.gameObject.SetActive(true);
+        显示界面.SetActive(false);
+        解锁面板.SetActive(false);
+        提示文字.SetActive(true);
     }
 
     武器数据 创建新手木剑数据()
@@ -250,6 +271,36 @@ public class 武器选择UI控制器 : MonoBehaviour
 
         return 强化价格表[currentLevel];
     }
+    // 检查武器是否已解锁
+    private bool 检查武器是否解锁(string weaponName)
+    {
+        // 新手木剑永远是解锁的
+        if (weaponName == "新手木剑") return true;
+
+        // 其他武器检查 PlayerPrefs (1=解锁, 0=未解锁)
+        return PlayerPrefs.GetInt(PREF_UNLOCK_PREFIX + weaponName, 0) == 1;
+    }
+
+    // 执行解锁操作
+    private void 设置武器已解锁(string weaponName)
+    {
+        PlayerPrefs.SetInt(PREF_UNLOCK_PREFIX + weaponName, 1);
+        PlayerPrefs.Save();
+    }
+
+    // 获取武器价格
+    private int 获取武器价格(string weaponName)
+    {
+        switch (weaponName)
+        {
+            case "大剑": return 大剑_解锁价格;
+            case "细剑": return 细剑_解锁价格;
+            case "长枪": return 长枪_解锁价格;
+            case "锤子": return 锤子_解锁价格;
+            case "镰刀": return 镰刀_解锁价格;
+            default: return 99999;
+        }
+    }
     /// <summary>
     /// 选择武器
     /// </summary>
@@ -276,12 +327,68 @@ public class 武器选择UI控制器 : MonoBehaviour
 
         武器选择管理器.设置选择的武器(weaponData);
 
+        bool isUnlocked = 检查武器是否解锁(weaponData.武器名称);
 
-        // 启用开始按钮
-        if (开始游戏按钮 != null)开始游戏按钮.interactable = true;
+        if (isUnlocked)
+        {
+            // 已解锁：显示正常界面
+            开始游戏按钮.gameObject.SetActive(true);
+            开始游戏按钮.interactable = true;
+
+            // 隐藏解锁面板
+            if (解锁面板 != null) 解锁面板.SetActive(false);
+
+            // 启用强化功能
+            刷新强化UI状态();
+        }
+        else
+        {
+            // 未解锁：隐藏开始按钮，显示解锁面板
+            开始游戏按钮.gameObject.SetActive(false);
+
+            // 禁用强化按钮 (未解锁不能强化)
+            设置按钮状态(强化基础伤害按钮, false);
+            设置按钮状态(强化蓄力加成伤害按钮, false);
+            设置按钮状态(强化体力消耗按钮, false);
+
+            // 显示解锁面板
+            if (解锁面板 != null)
+            {
+                解锁面板.SetActive(true);
+                int price = 获取武器价格(weaponData.武器名称);
+                if (解锁价格文本 != null) 解锁价格文本.text = $"{price}";
+            }
+        }
+
         显示界面.gameObject.SetActive(true);
         提示文字.gameObject.SetActive(false);
-        刷新强化UI状态();
+    }
+    void 点击购买解锁()
+    {
+        if (当前选择的武器数据 == null) return;
+        string weaponName = 当前选择的武器数据.武器名称;
+
+        // 再次检查是否已解锁（防止连点）
+        if (检查武器是否解锁(weaponName)) return;
+
+        int cost = 获取武器价格(weaponName);
+
+        // 调用金币扣除逻辑
+        if (玩家属性.Instance.扣除金币(cost))
+        {
+            // 扣费成功，保存状态
+            设置武器已解锁(weaponName);
+            音频管理器.Instance.播放金币掉落音效();
+            Debug.Log($"解锁成功：{weaponName}");
+
+            // 刷新界面，变为已解锁状态
+            重新加载当前武器();
+        }
+        else
+        {
+            Debug.Log("金币不足，无法解锁！");
+            // 这里可以加一个飘字提示 "金币不足"
+        }
     }
 
     /// <summary>
@@ -373,6 +480,7 @@ public class 武器选择UI控制器 : MonoBehaviour
 
             // 6. 记录等级提升
             增加武器属性等级(currentWeapon, TYPE_BASE_DMG);
+            音频管理器.Instance.播放强化音效();
 
             // 7. 刷新界面 (重新生成数据以更新显示的数值，并刷新按钮状态)
             重新加载当前武器();

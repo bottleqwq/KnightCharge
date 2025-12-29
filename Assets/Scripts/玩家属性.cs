@@ -26,6 +26,9 @@ public class 玩家属性 : MonoBehaviour
     public float 生命窃取值 = 1f;
     public float 基础伤害增加值 = 0f;
     public float 蓄力伤害增加值 = 0f;
+    public float 旋转速度修正值 = 0f;
+    public float 击退增加值 = 0f;
+    public float 冲刺力度增加值 = 0f;
     public int 当前金币 = 0;
 
     [Header("UI 设置")]

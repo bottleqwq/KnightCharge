@@ -414,7 +414,7 @@ public class 能力强化管理器 : MonoBehaviour
             // 5. 保存等级
             PlayerPrefs.SetInt(key, currentLevel + 1);
             PlayerPrefs.Save();
-
+            音频管理器.Instance.播放强化音效();
             // 6. 刷新界面
             if (refreshAction != null) refreshAction.Invoke();
 
