@@ -31,6 +31,7 @@ public class 祝福管理器 : MonoBehaviour
 
     void Start()
     {
+        玩家属性.Instance.重置属性();
         更新祝福条();
         强化面板.SetActive(false); // 确保开始时面板是隐藏的
     }
@@ -195,8 +196,62 @@ public class 祝福管理器 : MonoBehaviour
             case UpgradeType.体力值强化:
                 玩家属性.Instance.最大体力值 += data.数值;
                 break;
+            case UpgradeType.体力值恢复速度强化:
+                玩家属性.Instance.体力值恢复速度 += data.数值;
+                break;
+            case UpgradeType.冲刺力度强化:
+                玩家属性.Instance.冲刺力度增加值 += data.数值;
+                break;
+            case UpgradeType.击退强化:
+                玩家属性.Instance.击退增加值 += data.数值;
+                break;
+            case UpgradeType.基础伤害强化:
+                玩家属性.Instance.基础伤害增加值 += data.数值;
+                break;
+            case UpgradeType.护甲恢复延迟强化:
+                玩家属性.Instance.护甲恢复延迟 -= data.数值;
+                break;
+            case UpgradeType.护甲恢复速度强化:
+                玩家属性.Instance.护甲恢复速度 += data.数值;
+                break;
+            case UpgradeType.护盾时长强化:
+                玩家属性.Instance.护盾时长 += data.数值;
+                break;
+            case UpgradeType.护盾爆率强化:
+                玩家属性.Instance.护盾爆率 += data.数值;
+                break;
             case UpgradeType.护甲值强化:
                 玩家属性.Instance.最大护甲值 += data.数值;
+                break;
+            case UpgradeType.生命窃取率强化:
+                玩家属性.Instance.生命窃取率 += data.数值;
+                break;
+            case UpgradeType.祝福击杀增长强化:
+                玩家属性.Instance.祝福击杀增长 += data.数值;
+                break;
+            case UpgradeType.祝福固定增长强化:
+                玩家属性.Instance.祝福固定增长 += data.数值;
+                break;
+            case UpgradeType.蓄力伤害强化:
+                玩家属性.Instance.蓄力伤害增加值 += data.数值;
+                break;
+            case UpgradeType.血瓶爆率强化:
+                玩家属性.Instance.血瓶爆率 += data.数值;
+                break;
+            case UpgradeType.闪避率强化:
+                玩家属性.Instance.闪避率 += data.数值;
+                break;
+            case UpgradeType.转速减慢:
+                玩家属性.Instance.旋转速度修正值 -= data.数值;
+                break;
+            case UpgradeType.转速加快:
+                玩家属性.Instance.旋转速度修正值 += data.数值;
+                break;
+            case UpgradeType.血瓶恢复值强化:
+                玩家属性.Instance.血瓶恢复值 += data.数值;
+                break;
+            case UpgradeType.生命窃取值强化:
+                玩家属性.Instance.生命窃取值 += data.数值;
                 break;
             case UpgradeType.拾取范围强化:
                 玩家属性.Instance.拾取范围 += data.数值;

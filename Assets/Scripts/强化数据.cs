@@ -23,7 +23,9 @@ public enum UpgradeType
     转速减慢,
     转速加快,
     击退强化,
-    冲刺力度强化
+    冲刺力度强化,
+    血瓶恢复值强化,
+    生命窃取值强化
 }
 //定义稀有度枚举
 public enum Rarity

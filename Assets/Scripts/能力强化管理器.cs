@@ -134,134 +134,134 @@ public class 能力强化管理器 : MonoBehaviour
         if (玩家属性.Instance == null) return;
 
         int 生命值等级 = PlayerPrefs.GetInt(生命值等级KEY, 0);
-        玩家属性.Instance.最大生命值 += (int)(生命值等级 * 生命值每次增加量);
+        玩家属性.Instance._基础最大生命值 += (int)(生命值等级 * 生命值每次增加量);
 
         int 护甲值等级 = PlayerPrefs.GetInt(护甲值等级KEY, 0);
-        玩家属性.Instance.最大护甲值 += (int)(护甲值等级 * 护甲值每次增加量);
+        玩家属性.Instance._基础最大护甲值 += (int)(护甲值等级 * 护甲值每次增加量);
 
         int 体力值等级 = PlayerPrefs.GetInt(体力值等级KEY, 0);
-        玩家属性.Instance.最大体力值 += (体力值等级 * 体力值每次增加量);
+        玩家属性.Instance._基础最大体力值 += (体力值等级 * 体力值每次增加量);
 
         int 护甲恢复延迟等级 = PlayerPrefs.GetInt(护甲恢复延迟等级KEY, 0);
-        玩家属性.Instance.护甲恢复延迟 += (护甲恢复延迟等级 * 护甲恢复延迟每次增加量);
+        玩家属性.Instance._基础护甲恢复延迟 += (护甲恢复延迟等级 * 护甲恢复延迟每次增加量);
 
         int 护甲恢复速度等级 = PlayerPrefs.GetInt(护甲恢复速度等级KEY, 0);
-        玩家属性.Instance.护甲恢复速度 += (护甲恢复速度等级 * 护甲恢复速度每次增加量);
+        玩家属性.Instance._基础护甲恢复速度 += (护甲恢复速度等级 * 护甲恢复速度每次增加量);
 
         int 护盾时长等级 = PlayerPrefs.GetInt(护盾时长等级KEY, 0);
-        玩家属性.Instance.护盾时长 += (护盾时长等级 * 护盾时长每次增加量);
+        玩家属性.Instance._基础护盾时长 += (护盾时长等级 * 护盾时长每次增加量);
 
         int 体力值恢复速度等级 = PlayerPrefs.GetInt(体力值恢复速度等级KEY, 0);
-        玩家属性.Instance.体力值恢复速度 += (体力值恢复速度等级 * 体力值恢复速度每次增加量);
+        玩家属性.Instance._基础体力值恢复速度 += (体力值恢复速度等级 * 体力值恢复速度每次增加量);
 
         int 护盾爆率等级 = PlayerPrefs.GetInt(护盾爆率等级KEY, 0);
-        玩家属性.Instance.护盾爆率 += (护盾爆率等级 * 护盾爆率每次增加量);
+        玩家属性.Instance._基础护盾爆率 += (护盾爆率等级 * 护盾爆率每次增加量);
 
         int 血瓶爆率等级 = PlayerPrefs.GetInt(血瓶爆率等级KEY, 0);
-        玩家属性.Instance.血瓶爆率 += (血瓶爆率等级 * 血瓶爆率每次增加量);
+        玩家属性.Instance._基础血瓶爆率 += (血瓶爆率等级 * 血瓶爆率每次增加量);
 
         int 金币爆率等级 = PlayerPrefs.GetInt(金币爆率等级KEY, 0);
-        玩家属性.Instance.金币爆率 += (金币爆率等级 * 金币爆率每次增加量);
+        玩家属性.Instance._基础金币爆率 += (金币爆率等级 * 金币爆率每次增加量);
 
         int 祝福固定增长等级 = PlayerPrefs.GetInt(祝福固定增长等级KEY, 0);
-        玩家属性.Instance.祝福固定增长 += (祝福固定增长等级 * 祝福固定增长每次增加量);
+        玩家属性.Instance._基础祝福固定增长 += (祝福固定增长等级 * 祝福固定增长每次增加量);
 
         int 祝福击杀增长等级 = PlayerPrefs.GetInt(祝福击杀增长等级KEY, 0);
-        玩家属性.Instance.祝福击杀增长 += (祝福击杀增长等级 * 祝福击杀增长每次增加量);
+        玩家属性.Instance._基础祝福击杀增长 += (祝福击杀增长等级 * 祝福击杀增长每次增加量);
 
         int 生命窃取率等级 = PlayerPrefs.GetInt(生命窃取率等级KEY, 0);
-        玩家属性.Instance.生命窃取率 += (生命窃取率等级 * 生命窃取率每次增加量);
+        玩家属性.Instance._基础生命窃取率 += (生命窃取率等级 * 生命窃取率每次增加量);
 
         int 闪避率等级 = PlayerPrefs.GetInt(闪避率等级KEY, 0);
-        玩家属性.Instance.闪避率 += (闪避率等级 * 闪避率每次增加量);
+        玩家属性.Instance._基础闪避率 += (闪避率等级 * 闪避率每次增加量);
     }
 
     void 选择生命值()
     {
         当前选择的属性类型 = TYPE生命值;
         更新UI显示("最大生命值", "增加角色的最大生命值上限。", 生命值Sprite,
-            生命值等级KEY, 玩家属性.Instance.最大生命值, 生命值每次增加量);
+            生命值等级KEY, 玩家属性.Instance._基础最大生命值, 生命值每次增加量);
     }
 
     void 选择护甲值()
     {
         当前选择的属性类型 = TYPE护甲值;
         更新UI显示("最大护甲值", "增加角色的最大护甲值上限。", 护甲值Sprite,
-            护甲值等级KEY, 玩家属性.Instance.最大护甲值, 护甲值每次增加量);
+            护甲值等级KEY, 玩家属性.Instance._基础最大护甲值, 护甲值每次增加量);
     }
 
     void 选择体力值()
     {
         当前选择的属性类型 = TYPE体力值;
         更新UI显示("最大体力值", "增加冲锋所需的最大体力值上限。", 体力值Sprite,
-            体力值等级KEY, 玩家属性.Instance.最大体力值, 体力值每次增加量);
+            体力值等级KEY, 玩家属性.Instance._基础最大体力值, 体力值每次增加量);
     }
     void 选择护甲恢复延迟()
     {
         当前选择的属性类型 = TYPE护甲恢复延迟;
         更新UI显示("护甲恢复延迟", "减少护甲开始恢复所需没有受到伤害的时间。", 护甲恢复延迟Sprite,
-            护甲恢复延迟等级KEY, 玩家属性.Instance.护甲恢复延迟, 护甲恢复延迟每次增加量);
+            护甲恢复延迟等级KEY, 玩家属性.Instance._基础护甲恢复延迟, 护甲恢复延迟每次增加量);
     }
     void 选择护甲恢复速度()
     {
         当前选择的属性类型 = TYPE护甲恢复速度;
         更新UI显示("护甲恢复速度", "加快角色的护甲的恢复速度。", 护甲恢复速度Sprite,
-            护甲恢复速度等级KEY, 玩家属性.Instance.护甲恢复速度, 护甲恢复速度每次增加量);
+            护甲恢复速度等级KEY, 玩家属性.Instance._基础护甲恢复速度, 护甲恢复速度每次增加量);
     }
     void 选择护盾时长()
     {
         当前选择的属性类型 = TYPE护盾时长;
         更新UI显示("护盾时长", "延长护盾道具提供的护盾时间。", 护盾时长Sprite,
-            护盾时长等级KEY, 玩家属性.Instance.护盾时长, 护盾时长每次增加量);
+            护盾时长等级KEY, 玩家属性.Instance._基础护盾时长, 护盾时长每次增加量);
     }
     void 选择体力值恢复速度()
     {
         当前选择的属性类型 = TYPE体力值恢复速度;
         更新UI显示("体力值恢复速度", "加快角色的体力值恢复速度。", 体力值恢复速度Sprite,
-            体力值恢复速度等级KEY, 玩家属性.Instance.体力值恢复速度, 体力值恢复速度每次增加量);
+            体力值恢复速度等级KEY, 玩家属性.Instance._基础体力值恢复速度, 体力值恢复速度每次增加量);
     }
     void 选择护盾爆率()
     {
         当前选择的属性类型 = TYPE护盾爆率;
         更新UI显示("护盾爆率", "增加击杀敌人后掉落护盾的概率。", 护盾爆率Sprite,
-            护盾爆率等级KEY, 玩家属性.Instance.护盾爆率, 护盾爆率每次增加量);
+            护盾爆率等级KEY, 玩家属性.Instance._基础护盾爆率, 护盾爆率每次增加量);
     }
     void 选择血瓶爆率()
     {
         当前选择的属性类型 = TYPE血瓶爆率;
         更新UI显示("血瓶爆率", "增加击杀敌人后掉落血瓶的概率。", 血瓶爆率Sprite,
-            血瓶爆率等级KEY, 玩家属性.Instance.血瓶爆率, 血瓶爆率每次增加量);
+            血瓶爆率等级KEY, 玩家属性.Instance._基础血瓶爆率, 血瓶爆率每次增加量);
     }
     void 选择金币爆率()
     {
         当前选择的属性类型 = TYPE金币爆率;
         更新UI显示("金币爆率", "增加击杀敌人后掉落金币的概率。", 金币爆率Sprite,
-            金币爆率等级KEY, 玩家属性.Instance.金币爆率, 金币爆率每次增加量);
+            金币爆率等级KEY, 玩家属性.Instance._基础金币爆率, 金币爆率每次增加量);
     }
     void 选择祝福固定增长()
     {
         当前选择的属性类型 = TYPE祝福固定增长;
         更新UI显示("祝福固定增长", "加快祝福随时间增长的速度。", 祝福固定增长Sprite,
-            祝福固定增长等级KEY, 玩家属性.Instance.祝福固定增长, 祝福固定增长每次增加量);
+            祝福固定增长等级KEY, 玩家属性.Instance._基础祝福固定增长, 祝福固定增长每次增加量);
     }
     void 选择祝福击杀增长()
     {
         当前选择的属性类型 = TYPE祝福击杀增长;
         更新UI显示("祝福击杀增长", "增加击杀敌人后获得的祝福。", 祝福击杀增长Sprite,
-            祝福击杀增长等级KEY, 玩家属性.Instance.祝福击杀增长, 祝福击杀增长每次增加量);
+            祝福击杀增长等级KEY, 玩家属性.Instance._基础祝福击杀增长, 祝福击杀增长每次增加量);
     }
 
     void 选择生命窃取率()
     {
         当前选择的属性类型 = TYPE生命窃取率;
         更新UI显示("生命窃取率", "增加攻击敌人后恢复自身生命值的概率", 生命窃取率Sprite,
-            生命窃取率等级KEY, 玩家属性.Instance.生命窃取率, 生命窃取率每次增加量);
+            生命窃取率等级KEY, 玩家属性.Instance._基础生命窃取率, 生命窃取率每次增加量);
     }
     void 选择闪避率()
     {
         当前选择的属性类型 = TYPE闪避率;
         更新UI显示("闪避率", "增加角色受到敌人攻击但不受到伤害的概率。", 闪避率Sprite,
-            闪避率等级KEY, 玩家属性.Instance.闪避率, 闪避率每次增加量);
+            闪避率等级KEY, 玩家属性.Instance._基础闪避率, 闪避率每次增加量);
     }
     void 更新UI显示(string name, string desc, Sprite sprite, string saveKey, float currentVal, float increaseAmount)
     {
@@ -395,20 +395,20 @@ public class 能力强化管理器 : MonoBehaviour
             // 4. 实际修改玩家属性 (直接修改 Instance)
             switch (当前选择的属性类型)
             {
-                case TYPE生命值: 玩家属性.Instance.最大生命值 += increaseAmt; break;
-                case TYPE护甲值: 玩家属性.Instance.最大护甲值 += increaseAmt; break;
-                case TYPE体力值: 玩家属性.Instance.最大体力值 += increaseAmt; break;
-                case TYPE护甲恢复延迟: 玩家属性.Instance.护甲恢复延迟 += increaseAmt; break;
-                case TYPE护甲恢复速度: 玩家属性.Instance.护甲恢复速度 += increaseAmt; break;
-                case TYPE护盾时长: 玩家属性.Instance.护盾时长 += increaseAmt; break;
-                case TYPE体力值恢复速度: 玩家属性.Instance.体力值恢复速度 += increaseAmt; break;
-                case TYPE护盾爆率: 玩家属性.Instance.护盾爆率 += increaseAmt; break;
-                case TYPE血瓶爆率: 玩家属性.Instance.血瓶爆率 += increaseAmt; break;
-                case TYPE金币爆率: 玩家属性.Instance.金币爆率 += increaseAmt; break;
-                case TYPE祝福固定增长: 玩家属性.Instance.祝福固定增长 += increaseAmt; break;
-                case TYPE祝福击杀增长: 玩家属性.Instance.祝福击杀增长 += increaseAmt; break;
-                case TYPE生命窃取率: 玩家属性.Instance.生命窃取率 += increaseAmt; break;
-                case TYPE闪避率: 玩家属性.Instance.闪避率 += increaseAmt; break;
+                case TYPE生命值: 玩家属性.Instance._基础最大生命值 += increaseAmt; break;
+                case TYPE护甲值: 玩家属性.Instance._基础最大护甲值 += increaseAmt; break;
+                case TYPE体力值: 玩家属性.Instance._基础最大体力值 += increaseAmt; break;
+                case TYPE护甲恢复延迟: 玩家属性.Instance._基础护甲恢复延迟 += increaseAmt; break;
+                case TYPE护甲恢复速度: 玩家属性.Instance._基础护甲恢复速度 += increaseAmt; break;
+                case TYPE护盾时长: 玩家属性.Instance._基础护盾时长 += increaseAmt; break;
+                case TYPE体力值恢复速度: 玩家属性.Instance._基础体力值恢复速度 += increaseAmt; break;
+                case TYPE护盾爆率: 玩家属性.Instance._基础护盾爆率 += increaseAmt; break;
+                case TYPE血瓶爆率: 玩家属性.Instance._基础血瓶爆率 += increaseAmt; break;
+                case TYPE金币爆率: 玩家属性.Instance._基础金币爆率 += increaseAmt; break;
+                case TYPE祝福固定增长: 玩家属性.Instance._基础祝福固定增长 += increaseAmt; break;
+                case TYPE祝福击杀增长: 玩家属性.Instance._基础祝福击杀增长 += increaseAmt; break;
+                case TYPE生命窃取率: 玩家属性.Instance._基础生命窃取率 += increaseAmt; break;
+                case TYPE闪避率: 玩家属性.Instance._基础闪避率 += increaseAmt; break;
             }
 
             // 5. 保存等级

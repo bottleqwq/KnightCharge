@@ -43,6 +43,9 @@ public class 玩家控制器 : MonoBehaviour
     private float 上次受伤时间 = -999f;
     private float 护甲恢复累积值 = 0f; // 用于累积护甲恢复值，避免小数丢失
 
+    [Header("护盾系统")]
+    public GameObject 护盾物件;
+
     [Header("战斗手感")]
     public float 命中反冲力 = 3f;
 
@@ -63,6 +66,7 @@ public class 玩家控制器 : MonoBehaviour
         上次受伤时间 = -999f; // 初始化为一个很早的时间，让护甲可以立即开始恢复
         护甲恢复累积值 = 0f; // 初始化护甲恢复累积值
         UpdateUI();
+        护盾物件.SetActive(false);
 
         // 应用选择的武器
         应用选择的武器();
@@ -467,7 +471,7 @@ public class 玩家控制器 : MonoBehaviour
         isInvincible = true;
         Debug.Log($"<color=cyan>护盾激活！无敌 {duration} 秒</color>");
 
-        // TODO: 这里可以添加护盾特效开启代码（例如生成一个光圈）
+        护盾物件.SetActive(true);
 
         yield return new WaitForSeconds(duration);
 
@@ -476,7 +480,7 @@ public class 玩家控制器 : MonoBehaviour
         currentShieldCoroutine = null; // 清空引用
         Debug.Log("护盾失效");
 
-        // TODO: 这里可以添加护盾特效关闭代码
+        护盾物件.SetActive(false);
     }
     // 计算伤害：根据蓄力百分比计算实际伤害
     public float CalculateDamage()

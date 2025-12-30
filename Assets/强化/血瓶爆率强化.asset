@@ -18,4 +18,4 @@ MonoBehaviour:
   rarity: 1
   type: 8
   "\u6570\u503C": 5
-  maxCount: -1
+  maxCount: 10

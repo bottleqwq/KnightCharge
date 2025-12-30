@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa123dbf58a8bcc4d876626160aa2d33, type: 3}
-  m_Name: "\u62A4\u76FE\u7206\u7387\u5F3A\u5316"
+  m_Name: "\u8840\u74F6\u6062\u590D\u503C\u5F3A\u5316"
   m_EditorClassIdentifier: 
-  "\u5F3A\u5316\u540D\u79F0": "\u62A4\u76FE\u7206\u7387\u5F3A\u5316"
-  "\u5F3A\u5316\u4ECB\u7ECD": "\u62A4\u76FE\u7206\u7387\u5F3A\u5316"
-  "\u5F3A\u5316\u56FE\u6807": {fileID: 21300000, guid: da55ea0622afad24a9d73aabb237266b, type: 3}
+  "\u5F3A\u5316\u540D\u79F0": "\u8840\u74F6\u6062\u590D\u503C\u5F3A\u5316"
+  "\u5F3A\u5316\u4ECB\u7ECD": 
+  "\u5F3A\u5316\u56FE\u6807": {fileID: 21300000, guid: 7f1eab286b36ea542a34f3d1fb23a7e6, type: 3}
   rarity: 1
-  type: 7
-  "\u6570\u503C": 5
-  maxCount: 10
+  type: 21
+  "\u6570\u503C": 1
+  maxCount: 3

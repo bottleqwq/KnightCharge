@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class 血瓶 : MonoBehaviour
 {
-    public float 恢复量 = 1f;
     public float 飞行速度 = 3f;
     public float 飞行加速度 = 3f;
     public float 存在时间 = 10f; // 10秒后消失
@@ -62,7 +61,7 @@ public class 血瓶 : MonoBehaviour
         玩家控制器 player = 玩家位置.GetComponent<玩家控制器>();
         if (player != null)
         {
-            player.恢复生命(恢复量);
+            player.恢复生命(玩家属性.Instance.血瓶恢复值);
         }
 
         // 如果有特定的音效方法，请替换下面这一行
