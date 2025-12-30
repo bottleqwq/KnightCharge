@@ -11,6 +11,7 @@ public class 能力强化管理器 : MonoBehaviour
     public TextMeshProUGUI 属性介绍文本;
     public GameObject 显示界面;
     public GameObject 提示文字;
+    public GameObject 金币图标;
 
     [Header("强化操作引用")]
     public Button 强化按钮;
@@ -279,7 +280,8 @@ public class 能力强化管理器 : MonoBehaviour
         if (currentLevel >= 最大强化等级)
         {
             属性数值文本.text = $"当前: {currentVal} (已满级)";
-            强化花费文本.text = "MAX";
+            强化花费文本.gameObject.SetActive(false);
+            金币图标.SetActive(false);
             强化按钮.interactable = false; // 禁用按钮
         }
         else
@@ -289,7 +291,9 @@ public class 能力强化管理器 : MonoBehaviour
 
             // 获取当前等级对应的价格
             int cost = 获取当前花费(currentLevel);
+            强化花费文本.gameObject.SetActive(true);
             强化花费文本.text = cost.ToString();
+            金币图标.SetActive(true);
             强化按钮.interactable = true; // 启用按钮
         }
     }

@@ -28,6 +28,9 @@ public class 玩家控制器 : MonoBehaviour
 
     private float 当前体力值;
 
+    [Header("蓄力UI")]
+    public Slider 蓄力条;
+
     [Header("玩家生命")]
     public Slider 生命值条;
     public TextMeshProUGUI 生命值文本;
@@ -66,6 +69,7 @@ public class 玩家控制器 : MonoBehaviour
         上次受伤时间 = -999f; // 初始化为一个很早的时间，让护甲可以立即开始恢复
         护甲恢复累积值 = 0f; // 初始化护甲恢复累积值
         UpdateUI();
+        蓄力条.value = 0;
         护盾物件.SetActive(false);
 
         // 应用选择的武器
@@ -184,6 +188,8 @@ public class 玩家控制器 : MonoBehaviour
             {
                 isAiming = true;
                 当前蓄力时间 = 0f;
+                蓄力条.gameObject.SetActive(true);
+                蓄力条.value = 0;
             }
             else
             {
@@ -200,6 +206,7 @@ public class 玩家控制器 : MonoBehaviour
             {
                 当前蓄力时间 += Time.deltaTime;
                 当前蓄力时间 = Mathf.Clamp(当前蓄力时间, 0, 最大蓄力时间);
+                蓄力条.value = 当前蓄力时间 / 最大蓄力时间;
             }
         }
 
