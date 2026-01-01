@@ -1,4 +1,5 @@
 using UnityEngine;
+using DamageNumbersPro;
 using System.Collections;
 
 public class 远程敌人控制器 : MonoBehaviour
@@ -16,6 +17,7 @@ public class 远程敌人控制器 : MonoBehaviour
     [Header("受击反馈")]
     public float 受击变色时间 = 0.1f;
     public float 受击僵直时间 = 0.5f; // 受到伤害后的僵直时间
+    public DamageNumber damageNumberPrefab;
 
     private Transform playerTransform;
     private Rigidbody2D rb;
@@ -188,6 +190,7 @@ public class 远程敌人控制器 : MonoBehaviour
         if (isDead) return;
         当前生命 -= damage;
         Debug.Log($"远程敌人受到伤害: {damage}, 剩余血量: {当前生命}");
+        damageNumberPrefab.Spawn(transform.position,damage);
         音频管理器.Instance.播放命中音效();
 
         // 触发受击僵直

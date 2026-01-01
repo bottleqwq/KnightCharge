@@ -636,9 +636,9 @@ RectTransform:
   - {fileID: 1408862075}
   m_Father: {fileID: 94145062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 900, y: -337.905}
   m_SizeDelta: {x: 350, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183061453
@@ -940,6 +940,7 @@ GameObject:
   m_Component:
   - component: {fileID: 257034649}
   - component: {fileID: 257034648}
+  - component: {fileID: 257034650}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -1002,6 +1003,29 @@ Transform:
   - {fileID: 2028755761}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &257034650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257034647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 1
+  m_UseCameraSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &269446404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1942,7 +1966,7 @@ MonoBehaviour:
   "_\u57FA\u7840\u62A4\u7532\u6062\u590D\u5EF6\u8FDF": 5
   "_\u57FA\u7840\u6700\u5927\u62A4\u7532\u503C": 5
   "_\u57FA\u7840\u62FE\u53D6\u8303\u56F4": 1
-  "_\u57FA\u7840\u795D\u798F\u9700\u8981\u503C": 1000
+  "_\u57FA\u7840\u795D\u798F\u9700\u8981\u503C": 100
   "_\u57FA\u7840\u795D\u798F\u56FA\u5B9A\u589E\u957F": 5
   "_\u57FA\u7840\u795D\u798F\u51FB\u6740\u589E\u957F": 20
   "_\u57FA\u7840\u91D1\u5E01\u7206\u7387": 50
@@ -2029,9 +2053,9 @@ RectTransform:
   - {fileID: 459534682}
   m_Father: {fileID: 94145062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 180, y: -337.905}
   m_SizeDelta: {x: 350, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &747971372
@@ -2846,7 +2870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1164652111
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3821,9 +3845,9 @@ RectTransform:
   - {fileID: 2037906684}
   m_Father: {fileID: 94145062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -337.905}
   m_SizeDelta: {x: 350, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1530748329
@@ -4510,6 +4534,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a24db5d35457154e92e2bb8661997ef, type: 2}
   - {fileID: 11400000, guid: 4c1adbc2f1971044a9856cfb06fb2ea2, type: 2}
   - {fileID: 11400000, guid: c3cb473006a15334a92eb8d13dbbca88, type: 2}
+  "\u73A9\u5BB6": {fileID: 5684862945141270936}
 --- !u!1 &1876549025
 GameObject:
   m_ObjectHideFlags: 0
@@ -5434,6 +5459,7 @@ GameObject:
   - component: {fileID: 5684862945141270936}
   - component: {fileID: 8324342261408470696}
   - component: {fileID: 5647260571097727353}
+  - component: {fileID: 8484050471132489957}
   m_Layer: 0
   m_Name: "\u73A9\u5BB6"
   m_TagString: Player
@@ -5560,13 +5586,23 @@ MonoBehaviour:
   "\u4F53\u529B\u6D88\u8017": 1
   "\u4F53\u529B\u503C\u6761": {fileID: 1818452917}
   "\u4F53\u529B\u503C\u6587\u672C": {fileID: 563302387}
+  "\u5F53\u524D\u4F53\u529B\u503C": 0
   "\u84C4\u529B\u6761": {fileID: 2077014030}
   "\u751F\u547D\u503C\u6761": {fileID: 2106620027}
   "\u751F\u547D\u503C\u6587\u672C": {fileID: 1368218363}
+  "\u5F53\u524D\u751F\u547D\u503C": 0
   "\u62A4\u7532\u503C\u6761": {fileID: 825835462}
   "\u62A4\u7532\u503C\u6587\u672C": {fileID: 1799017941}
+  "\u5F53\u524D\u62A4\u7532\u503C": 0
   "\u62A4\u76FE\u7269\u4EF6": {fileID: 2137183671}
+  damageNumberPrefab: {fileID: 2878262124548959280, guid: de25990efab097d41996879ae98858c4, type: 3}
   "\u547D\u4E2D\u53CD\u51B2\u529B": 3
+  "\u987F\u5E27\u65F6\u95F4": 0.1
+  targetCamera: {fileID: 257034648}
+  "\u955C\u5934\u9ED8\u8BA4\u5927\u5C0F": 9
+  "\u955C\u5934\u6536\u7F29\u5927\u5C0F": 8
+  "\u955C\u5934\u6536\u7F29\u901F\u5EA6": 1
+  "\u955C\u5934\u653E\u5927\u901F\u5EA6": 10
   isAiming: 0
   isDashing: 0
   isInvincible: 0
@@ -5736,6 +5772,59 @@ Transform:
   - {fileID: 2137183672}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8484050471132489957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2991565865420899957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: -0.2, z: 0}
 --- !u!1 &8702768738298642874
 GameObject:
   m_ObjectHideFlags: 0

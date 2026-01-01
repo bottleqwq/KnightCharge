@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using DamageNumbersPro;
+using UnityEngine;
 
 public class 敌人控制器 : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class 敌人控制器 : MonoBehaviour
     public float 受击变色时间 = 0.1f;
     public float 受击僵直时间 = 0.5f; // 受到伤害后的僵直时间
     public float 攻击僵直时间 = 0.3f; // 对玩家造成伤害后的僵直时间
+    public DamageNumber damageNumberPrefab;
 
     private Transform playerTransform;
     private Rigidbody2D rb;
@@ -127,6 +129,7 @@ public class 敌人控制器 : MonoBehaviour
                     float 吸血随机数 = Random.Range(0f, 100f);
                     if (吸血随机数 <= 玩家属性.Instance.生命窃取率)
                     {
+                        damageNumberPrefab.Spawn(transform.position, "吸血!");
                         playerScript.恢复生命(玩家属性.Instance.生命窃取值);
                     }
                     playerScript.触发攻击命中反馈();
@@ -141,6 +144,7 @@ public class 敌人控制器 : MonoBehaviour
         if (isDead) return;
         当前生命 -= damage;
         Debug.Log($"敌人受到伤害: {damage}, 剩余血量: {当前生命 }");
+        damageNumberPrefab.Spawn(transform.position, damage);
         音频管理器.Instance.播放命中音效();
 
         // 触发受击僵直

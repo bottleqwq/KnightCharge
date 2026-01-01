@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
+using DamageNumbersPro;
+using Cinemachine;
 
 public class 玩家控制器 : MonoBehaviour
 {
@@ -12,8 +14,8 @@ public class 玩家控制器 : MonoBehaviour
     [Header("默认武器属性（会被选择的武器覆盖）")]
     public float 旋转速度 = 300f;
     public float 最大蓄力时间 = 2.0f;
-    public float 最小冲刺力度 = 1f;
-    public float 最大冲刺力度 = 10f;
+    public float 最小冲刺力度 = 10f;
+    public float 最大冲刺力度 = 20f;
     public float 基础伤害 = 10f;
     public float 蓄力加成伤害 = 20f;
     public float 击退力度 = 10f;
@@ -26,7 +28,7 @@ public class 玩家控制器 : MonoBehaviour
     public Slider 体力值条;
     public TextMeshProUGUI 体力值文本;
 
-    private float 当前体力值;
+    public float 当前体力值;
 
     [Header("蓄力UI")]
     public Slider 蓄力条;
@@ -35,13 +37,13 @@ public class 玩家控制器 : MonoBehaviour
     public Slider 生命值条;
     public TextMeshProUGUI 生命值文本;
 
-    private float 当前生命值;
+    public float 当前生命值;
 
     [Header("护甲系统")]
     public Slider 护甲值条;
     public TextMeshProUGUI 护甲值文本;
 
-    private float 当前护甲值;
+    public float 当前护甲值;
     
     private float 上次受伤时间 = -999f;
     private float 护甲恢复累积值 = 0f; // 用于累积护甲恢复值，避免小数丢失
@@ -50,7 +52,15 @@ public class 玩家控制器 : MonoBehaviour
     public GameObject 护盾物件;
 
     [Header("战斗手感")]
+    public DamageNumber damageNumberPrefab;
     public float 命中反冲力 = 3f;
+    public float 顿帧时间 = 1f;
+    public CinemachineVirtualCamera targetCamera;
+    public float 镜头默认大小 = 8f;
+    public float 镜头收缩大小 = 4f;
+    public float 镜头收缩速度 = 2f;
+    public float 镜头放大速度 = 10f;
+    private CinemachineImpulseSource impulseSource;
 
     [Header("状态 (只读)")]
     public bool isAiming = false; // 是否正在瞄准(停止旋转)
@@ -63,6 +73,7 @@ public class 玩家控制器 : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
         当前体力值 = 玩家属性.Instance.最大体力值;
         当前生命值 = 玩家属性.Instance.最大生命值;
         当前护甲值 = 玩家属性.Instance.最大护甲值;
@@ -164,6 +175,7 @@ public class 玩家控制器 : MonoBehaviour
             isDashing = false;
         }
 
+        if (isAiming == false) { targetCamera.m_Lens.OrthographicSize = Mathf.Lerp(targetCamera.m_Lens.OrthographicSize, 镜头默认大小, Time.deltaTime * 镜头放大速度); }
         // 恢复体力逻辑：
         RegenerateStamina();
 
@@ -174,7 +186,7 @@ public class 玩家控制器 : MonoBehaviour
         if (isDashing) return;
 
         HandleInput();
-        HandleRotation();
+        HandleRotation();      
     }
 
     // 1. 处理输入 (支持鼠标/触摸)
@@ -207,6 +219,7 @@ public class 玩家控制器 : MonoBehaviour
                 当前蓄力时间 += Time.deltaTime;
                 当前蓄力时间 = Mathf.Clamp(当前蓄力时间, 0, 最大蓄力时间);
                 蓄力条.value = 当前蓄力时间 / 最大蓄力时间;
+                targetCamera.m_Lens.OrthographicSize = Mathf.Lerp(targetCamera.m_Lens.OrthographicSize, 镜头收缩大小, Time.deltaTime * 镜头收缩速度);
             }
         }
 
@@ -216,9 +229,9 @@ public class 玩家控制器 : MonoBehaviour
             if (isAiming)
             {
                 PerformDash();
-                isAiming = false;
+                isAiming = false;                
             }
-        }
+        }        
     }
 
 
@@ -307,7 +320,7 @@ public class 玩家控制器 : MonoBehaviour
         }
     }
 
-    void UpdateUI()
+    public void UpdateUI()
     {
         // 更新体力条
         if (体力值条 != null)
@@ -357,7 +370,7 @@ public class 玩家控制器 : MonoBehaviour
         float 闪避 = Random.Range(0f, 100f);
         if (闪避 <= 玩家属性.Instance.闪避率)
         {
-            //显示闪避
+            damageNumberPrefab.Spawn(transform.position, "闪避!");
             return;
         }
         // 记录受伤时间，用于护甲恢复延迟
@@ -395,7 +408,11 @@ public class 玩家控制器 : MonoBehaviour
             // UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
-
+    // 计算伤害：根据蓄力百分比计算实际伤害
+    public float CalculateDamage()
+    {
+        return 基础伤害 + 玩家属性.Instance.基础伤害增加值 + (上次蓄力百分比 * (蓄力加成伤害 + 玩家属性.Instance.蓄力伤害增加值));
+    }
     /// <summary>
     /// 当剑击中敌人时调用此方法
     /// </summary>
@@ -411,8 +428,11 @@ public class 玩家控制器 : MonoBehaviour
         // 剑的旋转轴.right 是剑的攻击方向，取反即为后退方向
         Vector2 recoilDir = -剑的旋转轴.right;
         rb.AddForce(recoilDir * 命中反冲力, ForceMode2D.Impulse);
-
         Debug.Log("攻击命中！执行刹车与反冲。");
+
+        // 4. 打击感
+        StartCoroutine(HitStop(顿帧时间*(0.5f+上次蓄力百分比)));
+        impulseSource.GenerateImpulse(0.5f+上次蓄力百分比);
     }
     /// <summary>
     /// 恢复生命值（由血瓶调用）
@@ -476,7 +496,6 @@ public class 玩家控制器 : MonoBehaviour
     IEnumerator ShieldInvincibilityRoutine(float duration)
     {
         isInvincible = true;
-        Debug.Log($"<color=cyan>护盾激活！无敌 {duration} 秒</color>");
 
         护盾物件.SetActive(true);
 
@@ -485,13 +504,19 @@ public class 玩家控制器 : MonoBehaviour
         // 护盾时间结束，取消无敌
         isInvincible = false;
         currentShieldCoroutine = null; // 清空引用
-        Debug.Log("护盾失效");
 
         护盾物件.SetActive(false);
     }
-    // 计算伤害：根据蓄力百分比计算实际伤害
-    public float CalculateDamage()
+    // 打击感顿帧
+    public IEnumerator HitStop(float duration)
     {
-        return 基础伤害 + 玩家属性.Instance.基础伤害增加值 + (上次蓄力百分比 * (蓄力加成伤害 + 玩家属性.Instance.蓄力伤害增加值));
+        if (Time.timeScale == 0) yield break; // 防止冲突
+
+        float originalScale = Time.timeScale;
+        Time.timeScale = 0.1f;
+
+        // 使用由于TimeScale为0，不能用WaitForSeconds，要用realtime
+        yield return new WaitForSecondsRealtime(duration);
+        Time.timeScale = originalScale;
     }
 }

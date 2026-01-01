@@ -17,6 +17,7 @@ public class 祝福管理器 : MonoBehaviour
 
     [Header("数据源")]
     public List<UpgradeData> 所有强化;
+    public 玩家控制器 玩家;
 
     private Dictionary<UpgradeData, int> 强化次数 = new Dictionary<UpgradeData, int>();
 
@@ -192,9 +193,13 @@ public class 祝福管理器 : MonoBehaviour
         {
             case UpgradeType.生命值强化:
                 玩家属性.Instance.最大生命值 += data.数值;
+                玩家.当前生命值 += data.数值;
+                玩家.UpdateUI();
                 break;
             case UpgradeType.体力值强化:
                 玩家属性.Instance.最大体力值 += data.数值;
+                玩家.当前体力值 += data.数值;
+                玩家.UpdateUI();
                 break;
             case UpgradeType.体力值恢复速度强化:
                 玩家属性.Instance.体力值恢复速度 += data.数值;
@@ -222,6 +227,8 @@ public class 祝福管理器 : MonoBehaviour
                 break;
             case UpgradeType.护甲值强化:
                 玩家属性.Instance.最大护甲值 += data.数值;
+                玩家.当前护甲值 += data.数值;
+                玩家.UpdateUI();
                 break;
             case UpgradeType.生命窃取率强化:
                 玩家属性.Instance.生命窃取率 += data.数值;
