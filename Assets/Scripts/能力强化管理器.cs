@@ -32,6 +32,8 @@ public class 能力强化管理器 : MonoBehaviour
     public Button 祝福击杀增长选择按钮;
     public Button 生命窃取率选择按钮;
     public Button 闪避率选择按钮;
+    public Button 祝福需要值选择按钮;
+    public Button 命中恢复体力选择按钮;
 
     [Header("属性图标资源")]
     public Sprite 生命值Sprite;
@@ -48,6 +50,8 @@ public class 能力强化管理器 : MonoBehaviour
     public Sprite 祝福击杀增长Sprite;
     public Sprite 生命窃取率Sprite;
     public Sprite 闪避率Sprite;
+    public Sprite 祝福需要值Sprite;
+    public Sprite 命中恢复体力Sprite;
 
     [Header("强化数值配置")]
     public float 生命值每次增加量 = 2f;
@@ -64,6 +68,8 @@ public class 能力强化管理器 : MonoBehaviour
     public float 祝福击杀增长每次增加量 = 1f;
     public float 生命窃取率每次增加量 = 0.5f;
     public float 闪避率每次增加量 = 1f;
+    public float 祝福需要值每次增加量 = 50f;
+    public float 命中恢复体力每次增加量 = 1f;
 
     [Header("强化花费配置")]
     // 0级升1级花费10，1级升2级花费20，以此类推
@@ -85,6 +91,8 @@ public class 能力强化管理器 : MonoBehaviour
     private const string 祝福击杀增长等级KEY = "骑士冲锋祝福击杀增长等级";
     private const string 生命窃取率等级KEY = "骑士冲锋生命窃取率等级";
     private const string 闪避率等级KEY = "骑士冲锋闪避率等级";
+    private const string 祝福需要值等级KEY = "骑士冲锋祝福需要值等级";
+    private const string 命中恢复体力等级KEY = "骑士冲锋命中恢复体力等级";
 
     // 当前选中的属性类型（用于判断强化按钮点击后该升级谁）
     private string 当前选择的属性类型 = "";
@@ -103,6 +111,8 @@ public class 能力强化管理器 : MonoBehaviour
     private const string TYPE祝福击杀增长 = "祝福击杀增长";
     private const string TYPE生命窃取率 = "生命窃取率";
     private const string TYPE闪避率 = "闪避率";
+    private const string TYPE祝福需要值 = "祝福需要值";
+    private const string TYPE命中恢复体力 = "命中恢复体力";
     void Start()
     {
         // 1. 初始化属性 (非常重要！确保游戏开始时，玩家身上的属性是加上了强化值的)
@@ -123,6 +133,8 @@ public class 能力强化管理器 : MonoBehaviour
         if (祝福击杀增长选择按钮 != null) 祝福击杀增长选择按钮.onClick.AddListener(选择祝福击杀增长);
         if (闪避率选择按钮 != null) 闪避率选择按钮.onClick.AddListener(选择闪避率);
         if (生命窃取率选择按钮 != null) 生命窃取率选择按钮.onClick.AddListener(选择生命窃取率);
+        if (祝福需要值选择按钮 != null) 祝福需要值选择按钮.onClick.AddListener(选择祝福需要值);
+        if (命中恢复体力选择按钮 != null) 命中恢复体力选择按钮.onClick.AddListener(选择命中恢复体力);
 
         // 3. 绑定强化按钮事件
         if (强化按钮 != null) 强化按钮.onClick.AddListener(执行强化);
@@ -144,7 +156,7 @@ public class 能力强化管理器 : MonoBehaviour
         玩家属性.Instance._基础最大体力值 += (体力值等级 * 体力值每次增加量);
 
         int 护甲恢复延迟等级 = PlayerPrefs.GetInt(护甲恢复延迟等级KEY, 0);
-        玩家属性.Instance._基础护甲恢复延迟 += (护甲恢复延迟等级 * 护甲恢复延迟每次增加量);
+        玩家属性.Instance._基础护甲恢复延迟 -= (护甲恢复延迟等级 * 护甲恢复延迟每次增加量);
 
         int 护甲恢复速度等级 = PlayerPrefs.GetInt(护甲恢复速度等级KEY, 0);
         玩家属性.Instance._基础护甲恢复速度 += (护甲恢复速度等级 * 护甲恢复速度每次增加量);
@@ -175,6 +187,12 @@ public class 能力强化管理器 : MonoBehaviour
 
         int 闪避率等级 = PlayerPrefs.GetInt(闪避率等级KEY, 0);
         玩家属性.Instance._基础闪避率 += (闪避率等级 * 闪避率每次增加量);
+
+        int 祝福需要值等级 = PlayerPrefs.GetInt(祝福需要值等级KEY, 0);
+        玩家属性.Instance._基础祝福需要值 -= (祝福需要值等级 * 祝福需要值每次增加量);
+
+        int 命中恢复体力等级 = PlayerPrefs.GetInt(命中恢复体力等级KEY, 0);
+        玩家属性.Instance._基础命中恢复体力 += (命中恢复体力等级 * 命中恢复体力每次增加量);
     }
 
     void 选择生命值()
@@ -242,13 +260,13 @@ public class 能力强化管理器 : MonoBehaviour
     void 选择祝福固定增长()
     {
         当前选择的属性类型 = TYPE祝福固定增长;
-        更新UI显示("祝福固定增长", "加快祝福随时间增长的速度。", 祝福固定增长Sprite,
+        更新UI显示("祝福固定增长", "加快祝福值随时间增长的速度。", 祝福固定增长Sprite,
             祝福固定增长等级KEY, 玩家属性.Instance._基础祝福固定增长, 祝福固定增长每次增加量);
     }
     void 选择祝福击杀增长()
     {
         当前选择的属性类型 = TYPE祝福击杀增长;
-        更新UI显示("祝福击杀增长", "增加击杀敌人后获得的祝福。", 祝福击杀增长Sprite,
+        更新UI显示("祝福击杀增长", "增加击杀敌人后获得的祝福值。", 祝福击杀增长Sprite,
             祝福击杀增长等级KEY, 玩家属性.Instance._基础祝福击杀增长, 祝福击杀增长每次增加量);
     }
 
@@ -263,6 +281,18 @@ public class 能力强化管理器 : MonoBehaviour
         当前选择的属性类型 = TYPE闪避率;
         更新UI显示("闪避率", "增加角色受到敌人攻击但不受到伤害的概率。", 闪避率Sprite,
             闪避率等级KEY, 玩家属性.Instance._基础闪避率, 闪避率每次增加量);
+    }
+    void 选择祝福需要值()
+    {
+        当前选择的属性类型 = TYPE祝福需要值;
+        更新UI显示("祝福需要值", "减少获得祝福所需要的祝福值。", 祝福需要值Sprite,
+            祝福需要值等级KEY, 玩家属性.Instance._基础祝福需要值, 祝福需要值每次增加量);
+    }
+    void 选择命中恢复体力()
+    {
+        当前选择的属性类型 = TYPE命中恢复体力;
+        更新UI显示("命中恢复体力", "增加命中敌人后恢复的体力值。", 命中恢复体力Sprite,
+            命中恢复体力等级KEY, 玩家属性.Instance._基础命中恢复体力, 命中恢复体力每次增加量);
     }
     void 更新UI显示(string name, string desc, Sprite sprite, string saveKey, float currentVal, float increaseAmount)
     {
@@ -286,9 +316,8 @@ public class 能力强化管理器 : MonoBehaviour
         }
         else
         {
-            float nextVal = currentVal + increaseAmount;
-            属性数值文本.text = $"当前: {currentVal} →{nextVal}";
-
+            if (name == "祝福需要值" || name == "护甲恢复延迟") { float nextVal = currentVal - increaseAmount; 属性数值文本.text = $"当前: {currentVal} →{nextVal}"; }
+            else { float nextVal = currentVal + increaseAmount; 属性数值文本.text = $"当前: {currentVal} →{nextVal}"; }                     
             // 获取当前等级对应的价格
             int cost = 获取当前花费(currentLevel);
             强化花费文本.gameObject.SetActive(true);
@@ -386,6 +415,16 @@ public class 能力强化管理器 : MonoBehaviour
                 increaseAmt = 闪避率每次增加量;
                 refreshAction = 选择闪避率;
                 break;
+            case TYPE祝福需要值:
+                key = 祝福需要值等级KEY;
+                increaseAmt = 祝福需要值每次增加量;
+                refreshAction = 选择祝福需要值;
+                break;
+            case TYPE命中恢复体力:
+                key = 命中恢复体力等级KEY;
+                increaseAmt = 命中恢复体力每次增加量;
+                refreshAction = 选择命中恢复体力;
+                break;
         }
 
         // 2. 检查等级
@@ -402,7 +441,7 @@ public class 能力强化管理器 : MonoBehaviour
                 case TYPE生命值: 玩家属性.Instance._基础最大生命值 += increaseAmt; break;
                 case TYPE护甲值: 玩家属性.Instance._基础最大护甲值 += increaseAmt; break;
                 case TYPE体力值: 玩家属性.Instance._基础最大体力值 += increaseAmt; break;
-                case TYPE护甲恢复延迟: 玩家属性.Instance._基础护甲恢复延迟 += increaseAmt; break;
+                case TYPE护甲恢复延迟: 玩家属性.Instance._基础护甲恢复延迟 -= increaseAmt; break;
                 case TYPE护甲恢复速度: 玩家属性.Instance._基础护甲恢复速度 += increaseAmt; break;
                 case TYPE护盾时长: 玩家属性.Instance._基础护盾时长 += increaseAmt; break;
                 case TYPE体力值恢复速度: 玩家属性.Instance._基础体力值恢复速度 += increaseAmt; break;
@@ -413,6 +452,8 @@ public class 能力强化管理器 : MonoBehaviour
                 case TYPE祝福击杀增长: 玩家属性.Instance._基础祝福击杀增长 += increaseAmt; break;
                 case TYPE生命窃取率: 玩家属性.Instance._基础生命窃取率 += increaseAmt; break;
                 case TYPE闪避率: 玩家属性.Instance._基础闪避率 += increaseAmt; break;
+                case TYPE祝福需要值: 玩家属性.Instance._基础祝福需要值 -= increaseAmt; break;
+                case TYPE命中恢复体力: 玩家属性.Instance._基础命中恢复体力 += increaseAmt; break;
             }
 
             // 5. 保存等级

@@ -7,6 +7,7 @@ public class 音频管理器 : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip 强化音效;
     public AudioClip 命中音效;
+    public AudioClip 冲刺音效;
     public AudioClip 金币音效;
     public AudioClip 金币掉落音效;
 
@@ -28,6 +29,10 @@ public class 音频管理器 : MonoBehaviour
     public void 播放命中音效()
     {
         audioSource.PlayOneShot(命中音效);
+    }
+    public void 播放冲刺音效()
+    {
+        audioSource.PlayOneShot(冲刺音效);
     }
     public void 播放金币音效()
     {

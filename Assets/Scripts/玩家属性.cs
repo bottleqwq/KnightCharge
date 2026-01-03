@@ -25,6 +25,7 @@ public class 玩家属性 : MonoBehaviour
     public float _基础闪避率 = 5f;
     public float _基础生命窃取率 = 5f;
     public float _基础生命窃取值 = 1f;
+    public float _基础命中恢复体力 = 1f;
 
     [Header("实时运行时数值")]
     public float 最大体力值;
@@ -45,6 +46,7 @@ public class 玩家属性 : MonoBehaviour
     public float 闪避率;
     public float 生命窃取率;
     public float 生命窃取值;
+    public float 命中恢复体力;
 
     [Header("累加型数值")]
     public float 基础伤害增加值;
@@ -98,6 +100,7 @@ public class 玩家属性 : MonoBehaviour
         闪避率 = _基础闪避率;
         生命窃取率 = _基础生命窃取率;
         生命窃取值 = _基础生命窃取值;
+        命中恢复体力 = _基础命中恢复体力;
 
         基础伤害增加值 = 0f;
         蓄力伤害增加值 = 0f;

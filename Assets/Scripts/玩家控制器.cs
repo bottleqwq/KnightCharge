@@ -53,6 +53,7 @@ public class 玩家控制器 : MonoBehaviour
 
     [Header("战斗手感")]
     public DamageNumber damageNumberPrefab;
+    public ParticleSystem ps;
     public float 命中反冲力 = 3f;
     public float 顿帧时间 = 1f;
     public CinemachineVirtualCamera targetCamera;
@@ -72,6 +73,8 @@ public class 玩家控制器 : MonoBehaviour
     private Coroutine currentShieldCoroutine;
     void Start()
     {
+        var emission = ps.emission;
+        emission.enabled = false;
         rb = GetComponent<Rigidbody2D>();
         impulseSource = GetComponent<CinemachineImpulseSource>();
         当前体力值 = 玩家属性.Instance.最大体力值;
@@ -473,9 +476,13 @@ public class 玩家控制器 : MonoBehaviour
     // 协程：简单的冲刺状态管理
     IEnumerator DashRoutine()
     {
-        // 这里可以加: 开启残影特效
+        // TODO: 开启残影特效
+        var emission = ps.emission;
+        emission.enabled = true;
+        音频管理器.Instance.播放冲刺音效();
         yield return new WaitForSeconds(0.2f); // 这里的等待仅用于视觉效果或短暂的硬直
-        // 这里可以加: 关闭残影特效
+        // TODO: 关闭残影特效
+        emission.enabled = false;
         // 不要在这里设置 isDashing = false，交给 Update 里的速度去判断
 
     }
@@ -483,7 +490,7 @@ public class 玩家控制器 : MonoBehaviour
     IEnumerator InvincibilityRoutine()
     {
         isInvincible = true;
-        // 这里可以让主角闪烁一下
+        // TODO:这里可以让主角闪烁一下
         yield return new WaitForSeconds(1.0f); // 无敌1秒
         // 只有当没有护盾协程在运行时，才取消无敌状态
         // 避免受伤无敌结束时意外取消了还在持续的护盾无敌

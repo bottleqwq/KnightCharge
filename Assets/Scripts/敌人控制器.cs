@@ -123,9 +123,10 @@ public class 敌人控制器 : MonoBehaviour
                     float damage = playerScript.CalculateDamage();
                     Vector2 knockbackDir = playerScript.剑的旋转轴.right;
                     float knockbackForce = playerScript.击退力度 + 玩家属性.Instance.击退增加值; // 从玩家控制器获取击退力度
-
+                    playerScript.当前体力值 += 玩家属性.Instance.命中恢复体力;
                     // 执行伤害
                     TakeDamage(damage, knockbackDir, chargePercent, knockbackForce);
+
                     float 吸血随机数 = Random.Range(0f, 100f);
                     if (吸血随机数 <= 玩家属性.Instance.生命窃取率)
                     {
