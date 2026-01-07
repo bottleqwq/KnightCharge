@@ -1,9 +1,10 @@
-using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
-using TMPro;
-using DamageNumbersPro;
 using Cinemachine;
+using DamageNumbersPro;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Android;
+using UnityEngine.UI;
 
 public class 玩家控制器 : MonoBehaviour
 {
@@ -53,7 +54,8 @@ public class 玩家控制器 : MonoBehaviour
 
     [Header("战斗手感")]
     public DamageNumber damageNumberPrefab;
-    public ParticleSystem ps;
+    public ParticleSystem 粒子特效;
+    public TrailRenderer 拖尾特效;
     public float 命中反冲力 = 3f;
     public float 顿帧时间 = 1f;
     public CinemachineVirtualCamera targetCamera;
@@ -61,6 +63,7 @@ public class 玩家控制器 : MonoBehaviour
     public float 镜头收缩大小 = 4f;
     public float 镜头收缩速度 = 2f;
     public float 镜头放大速度 = 10f;
+    public GameObject 阵亡面板;
     private CinemachineImpulseSource impulseSource;
 
     [Header("状态 (只读)")]
@@ -73,8 +76,9 @@ public class 玩家控制器 : MonoBehaviour
     private Coroutine currentShieldCoroutine;
     void Start()
     {
-        var emission = ps.emission;
+        var emission = 粒子特效.emission;
         emission.enabled = false;
+        拖尾特效.emitting = false;
         rb = GetComponent<Rigidbody2D>();
         impulseSource = GetComponent<CinemachineImpulseSource>();
         当前体力值 = 玩家属性.Instance.最大体力值;
@@ -176,6 +180,9 @@ public class 玩家控制器 : MonoBehaviour
         if (isDashing && rb.velocity.magnitude < 1.0f)
         {
             isDashing = false;
+            var emission = 粒子特效.emission;
+            emission.enabled = false;
+            拖尾特效.emitting = false;
         }
 
         if (isAiming == false) { targetCamera.m_Lens.OrthographicSize = Mathf.Lerp(targetCamera.m_Lens.OrthographicSize, 镜头默认大小, Time.deltaTime * 镜头放大速度); }
@@ -269,6 +276,9 @@ public class 玩家控制器 : MonoBehaviour
 
         // 立即设置冲刺状态，确保攻击检测能正常工作
         isDashing = true;
+        拖尾特效.emitting = true;
+        var emission = 粒子特效.emission;
+        emission.enabled = true;
 
         // 给主角施加瞬间力
         rb.velocity = Vector2.zero; // 先清空当前速度，保证手感
@@ -407,8 +417,8 @@ public class 玩家控制器 : MonoBehaviour
         if (当前生命值 <= 0)
         {
             Debug.Log("游戏结束！");
-            // 这里可以重载场景或显示结算面板
-            // UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            Time.timeScale = 0f;
+            阵亡面板.SetActive( true );
         }
     }
     // 计算伤害：根据蓄力百分比计算实际伤害
@@ -426,6 +436,9 @@ public class 玩家控制器 : MonoBehaviour
 
         // 2. 结束冲刺状态（可选，视设计而定，建议结束以防止后续逻辑干扰）
         isDashing = false;
+        var emission = 粒子特效.emission;
+        emission.enabled = false;
+        拖尾特效.emitting = false;
 
         // 3. 施加反冲力 (向剑指向的相反方向)
         // 剑的旋转轴.right 是剑的攻击方向，取反即为后退方向
@@ -476,15 +489,8 @@ public class 玩家控制器 : MonoBehaviour
     // 协程：简单的冲刺状态管理
     IEnumerator DashRoutine()
     {
-        // TODO: 开启残影特效
-        var emission = ps.emission;
-        emission.enabled = true;
         音频管理器.Instance.播放冲刺音效();
         yield return new WaitForSeconds(0.2f); // 这里的等待仅用于视觉效果或短暂的硬直
-        // TODO: 关闭残影特效
-        emission.enabled = false;
-        // 不要在这里设置 isDashing = false，交给 Update 里的速度去判断
-
     }
 
     IEnumerator InvincibilityRoutine()

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: "\u4F53\u529B\u503C\u5F3A\u5316A"
   m_EditorClassIdentifier: 
   "\u5F3A\u5316\u540D\u79F0": "\u4F53\u529B\u503C\u5F3A\u5316A"
-  "\u5F3A\u5316\u4ECB\u7ECD": "\u4F7F\u4F60\u7684\u6700\u5927\u4F53\u529B\u503C\u589E\u52A060\u70B9"
+  "\u5F3A\u5316\u4ECB\u7ECD": "\u51B2\u950B\u6240\u9700\u7684\u6700\u5927\u4F53\u529B\u503C\u4E0A\u9650\u589E\u52A0150\u70B9\u3002"
   "\u5F3A\u5316\u56FE\u6807": {fileID: 21300000, guid: 70b645f46f5b31b4c8d31d0e9a467fd7, type: 3}
   rarity: 2
   type: 1
-  "\u6570\u503C": 60
+  "\u6570\u503C": 150
   maxCount: -1

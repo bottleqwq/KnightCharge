@@ -25,7 +25,8 @@ public enum UpgradeType
     击退强化,
     冲刺力度强化,
     血瓶恢复值强化,
-    生命窃取值强化
+    生命窃取值强化,
+    命中恢复体力强化
 }
 //定义稀有度枚举
 public enum Rarity

@@ -266,6 +266,9 @@ public class 祝福管理器 : MonoBehaviour
             case UpgradeType.金币爆率强化:
                 玩家属性.Instance.金币爆率 += data.数值;
                 break;
+            case UpgradeType.命中恢复体力强化:
+                玩家属性.Instance.命中恢复体力 += data.数值;
+                break;
         }
     }
 }

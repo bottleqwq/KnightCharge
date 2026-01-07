@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "\u62A4\u7532\u503C\u5F3A\u5316A"
   m_EditorClassIdentifier: 
   "\u5F3A\u5316\u540D\u79F0": "\u62A4\u7532\u503C\u5F3A\u5316B"
-  "\u5F3A\u5316\u4ECB\u7ECD": "\u4F7F\u4F60\u7684\u6700\u5927\u62A4\u7532\u503C\u589E\u52A02\u70B9"
+  "\u5F3A\u5316\u4ECB\u7ECD": "\u89D2\u8272\u7684\u6700\u5927\u62A4\u7532\u503C\u4E0A\u9650\u589E\u52A02\u70B9\u3002"
   "\u5F3A\u5316\u56FE\u6807": {fileID: 21300000, guid: 2d57919c3ad1d8d409b594597b979de3, type: 3}
   rarity: 2
   type: 2
