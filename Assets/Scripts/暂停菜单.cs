@@ -33,6 +33,7 @@ public class 暂停菜单 : MonoBehaviour
 
     public void 返回()
     {
+        音频管理器.Instance.播放按钮点击音效();
         pauseMenuUI.SetActive(false); // 隐藏暂停菜单
         Time.timeScale = 1f;          // 恢复游戏时间（1是正常速度）
         GameIsPaused = false;
@@ -40,6 +41,7 @@ public class 暂停菜单 : MonoBehaviour
 
     public void 暂停()
     {
+        音频管理器.Instance.播放按钮点击音效();
         pauseMenuUI.SetActive(true);  // 显示暂停菜单
         Time.timeScale = 0f;          // 冻结游戏时间（0是静止）
         GameIsPaused = true;
@@ -47,6 +49,7 @@ public class 暂停菜单 : MonoBehaviour
 
     public void 退出()
     {
+        音频管理器.Instance.播放按钮点击音效();
         // 恢复时间！非常重要，否则下一局游戏开始时时间还是静止的
         Time.timeScale = 1f;
         GameIsPaused = false;
@@ -54,5 +57,6 @@ public class 暂停菜单 : MonoBehaviour
         // "MainMenu" 需替换成你主界面场景的准确名字
         SceneManager.LoadScene("备战界面");
     }
+
 }
 

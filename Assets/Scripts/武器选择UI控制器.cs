@@ -40,7 +40,7 @@ public class 武器选择UI控制器 : MonoBehaviour
     private const int 最大强化等级 = 5;
 
     // 定义每一级的花费 (下标0代表从0级升到1级的花费，下标4代表4级升到5级)
-    private int[] 强化价格表 = new int[] { 1, 2, 3, 4, 5 };
+    public int[] 强化价格表 = new int[] { 5, 10, 15, 20, 25 };
 
     // 定义属性类型的常量Key，防止写错字符串
     private const string TYPE_BASE_DMG = "基础伤害";
@@ -359,7 +359,7 @@ public class 武器选择UI控制器 : MonoBehaviour
                 if (解锁价格文本 != null) 解锁价格文本.text = $"{price}";
             }
         }
-
+        音频管理器.Instance.播放按钮点击音效();
         显示界面.gameObject.SetActive(true);
         提示文字.gameObject.SetActive(false);
     }
@@ -521,6 +521,7 @@ public class 武器选择UI控制器 : MonoBehaviour
 
             // 记录等级提升
             增加武器属性等级(currentWeapon, TYPE_CHARGE_DMG);
+            音频管理器.Instance.播放强化音效();
 
             // 刷新界面
             重新加载当前武器();
@@ -558,6 +559,7 @@ public class 武器选择UI控制器 : MonoBehaviour
             // if (大剑_体力消耗 < 0) 大剑_体力消耗 = 0; 
 
             增加武器属性等级(currentWeapon, TYPE_STAMINA);
+            音频管理器.Instance.播放强化音效();
             重新加载当前武器();
             Debug.Log($"强化成功！{currentWeapon} 体力消耗等级升至 {currentLevel + 1}");
         }
@@ -648,8 +650,16 @@ public class 武器选择UI控制器 : MonoBehaviour
             Debug.LogWarning("请先选择武器！");
             return;
         }
+        音频管理器.Instance.播放按钮点击音效();
 
         // 加载战斗场景
         SceneManager.LoadScene(游戏战斗场景名称);
+    }
+
+
+    public void 返回主界面()
+    {
+        音频管理器.Instance.播放按钮点击音效();
+        SceneManager.LoadScene("主界面");
     }
 }

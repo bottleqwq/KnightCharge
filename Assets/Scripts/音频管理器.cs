@@ -10,6 +10,7 @@ public class 音频管理器 : MonoBehaviour
     public AudioClip 冲刺音效;
     public AudioClip 金币音效;
     public AudioClip 金币掉落音效;
+    public AudioClip 按钮点击音效;
 
     private void Awake()
     {
@@ -45,5 +46,9 @@ public class 音频管理器 : MonoBehaviour
     public void 播放强化音效()
     {
         audioSource.PlayOneShot(强化音效);
+    }
+    public void 播放按钮点击音效()
+    {
+        audioSource.PlayOneShot(按钮点击音效);
     }
 }

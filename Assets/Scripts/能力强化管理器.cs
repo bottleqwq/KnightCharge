@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -57,7 +57,7 @@ public class 能力强化管理器 : MonoBehaviour
     public float 生命值每次增加量 = 2f;
     public float 护甲值每次增加量 = 1f;
     public float 体力值每次增加量 = 10f;
-    public float 护甲恢复延迟每次增加量 = 1f;
+    public float 护甲恢复延迟每次增加量 = 0.5f;
     public float 护甲恢复速度每次增加量 = 1f;
     public float 护盾时长每次增加量 = 1f;
     public float 体力值恢复速度每次增加量 = 1f;
@@ -298,6 +298,7 @@ public class 能力强化管理器 : MonoBehaviour
     {
         显示界面.gameObject.SetActive(true);
         提示文字.gameObject.SetActive(false);
+        音频管理器.Instance.播放按钮点击音效();
         // 1. 基础信息
         属性图标显示.sprite = sprite;
         属性名称文本.text = name;
