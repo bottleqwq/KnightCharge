@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5347746856719174699}
   - component: {fileID: 7508880962216740398}
   m_Layer: 5
-  m_Name: "\u58F0\u97F3\u5F00\u5173"
+  m_Name: "\u97F3\u6548\u5F00\u5173"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e858b2f2400ad734193647542b84eabf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 878c39599dec06141beed15e25eb5ad4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -145,6 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8666d20ad783e941b77f4872e27428d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 1
+  audioMixer: {fileID: 24100000, guid: 12ac24aa788bb274296936c2b08ff07a, type: 2}
+  mixerParameterName: SFXVol
   buttonImage: {fileID: 7297601732939299369}
-  soundOnSprite: {fileID: 21300000, guid: e858b2f2400ad734193647542b84eabf, type: 3}
-  soundOffSprite: {fileID: 21300000, guid: 13b6e45b26316554ab438ea8f708e2d1, type: 3}
+  soundOnSprite: {fileID: 21300000, guid: 878c39599dec06141beed15e25eb5ad4, type: 3}
+  soundOffSprite: {fileID: 21300000, guid: 695b9aa76562d4842b4f24703026ea0a, type: 3}

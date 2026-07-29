@@ -75,6 +75,7 @@ public class 能力强化管理器 : MonoBehaviour
     // 0级升1级花费10，1级升2级花费20，以此类推
     public int[] 强化价格表 = new int[] { 1, 2, 3, 4, 5 };
     private const int 最大强化等级 = 5;
+    private static bool _能力属性已初始化 = false;
 
     // 内部常量 Key，用于存取 PlayerPrefs
     private const string 生命值等级KEY = "骑士冲锋生命值等级";
@@ -145,6 +146,8 @@ public class 能力强化管理器 : MonoBehaviour
     void 初始化玩家属性数值()
     {
         if (玩家属性.Instance == null) return;
+        if (_能力属性已初始化) return;
+        _能力属性已初始化 = true;
 
         int 生命值等级 = PlayerPrefs.GetInt(生命值等级KEY, 0);
         玩家属性.Instance._基础最大生命值 += (int)(生命值等级 * 生命值每次增加量);

@@ -1,50 +1,67 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class 声音控制 : MonoBehaviour
 {
+    // 定义枚举来区分类型
+    public enum AudioType { Music, SFX }
+
+    [Header("设置类型")]
+    [SerializeField] private AudioType type;
+
+    [Header("Audio Mixer 配置")]
+    [SerializeField] private AudioMixer audioMixer; // 拖入刚才创建的 MainMixer
+    [SerializeField] private string mixerParameterName; // 填入 "MusicVol" 或 "SFXVol"
+
     [Header("UI 组件")]
     [SerializeField] private Image buttonImage;      // 按钮的 Image 组件
-    [SerializeField] private Sprite soundOnSprite;    // 声音开启的图标
-    [SerializeField] private Sprite soundOffSprite;   // 声音关闭的图标
+    [SerializeField] private Sprite soundOnSprite;    // 开启图标
+    [SerializeField] private Sprite soundOffSprite;   // 关闭图标
 
     private bool isMuted = false;
+    private string prefsKey;
 
     private void Start()
     {
-        // 1. 从本地读取声音状态（0 表示开启，1 表示静音，默认开启）
-        isMuted = PlayerPrefs.GetInt("Muted", 0) == 1;
+        // 根据类型设置本地保存的 Key 值
+        prefsKey = (type == AudioType.Music) ? "MusicMuted" : "SFXMuted";
 
-        // 2. 初始化声音和图标状态
+        // 读取本地保存的状态
+        isMuted = PlayerPrefs.GetInt(prefsKey, 0) == 1;
+
+        // 应用声音状态
         ApplySoundState();
     }
 
-    // 按钮点击时调用的方法
     public void ToggleSound()
     {
-        // 1. 切换状态
         isMuted = !isMuted;
 
-        // 2. 保存设置到本地
-        PlayerPrefs.SetInt("Muted", isMuted ? 1 : 0);
+        // 保存状态
+        PlayerPrefs.SetInt(prefsKey, isMuted ? 1 : 0);
         PlayerPrefs.Save();
 
-        // 3. 应用状态
+        // 应用状态
         ApplySoundState();
     }
 
     private void ApplySoundState()
     {
-        if (isMuted)
+        // 在 Audio Mixer 中，音量大小是以分贝（dB）计算的。
+        // 0 分贝代表正常音量（无衰减），-80 分贝代表完全静音。
+        float targetVolume = isMuted ? -80f : 0f;
+
+        // 设置 Mixer 对应参数的值
+        if (audioMixer != null && !string.IsNullOrEmpty(mixerParameterName))
         {
-            AudioListener.volume = 0f;            // 全局静音
-            if (buttonImage != null) buttonImage.sprite = soundOffSprite; // 切换为静音图标
+            audioMixer.SetFloat(mixerParameterName, targetVolume);
         }
-        else
+
+        // 更新 UI 图标
+        if (buttonImage != null)
         {
-            AudioListener.volume = 1f;            // 全局恢复音量
-            if (buttonImage != null) buttonImage.sprite = soundOnSprite;  // 切换为有声音标
-            音频管理器.Instance.播放按钮点击音效();
+            buttonImage.sprite = isMuted ? soundOffSprite : soundOnSprite;
         }
     }
 }
