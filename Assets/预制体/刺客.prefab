@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f75a82a171f1a2543aa61f1374e9bbce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  "\u51FB\u6740\u5206\u6570": 8
   "\u79FB\u52A8\u901F\u5EA6": 1.5
   "\u6700\u5927\u751F\u547D": 8
   "\u4F24\u5BB3": 1

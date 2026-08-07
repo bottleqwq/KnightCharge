@@ -50,6 +50,9 @@ public class 法师敌人控制器 : MonoBehaviour
     public Color 死亡燃烧颜色 = Color.cyan; // 法师死的时候发蓝光
     private Material 死亡材质实例;
 
+    [Header("分数设置")]
+    public int 击杀分数 = 8;
+
     [Header("掉落设置")]
     public GameObject 金币;
     public GameObject 血瓶;
@@ -309,6 +312,11 @@ public class 法师敌人控制器 : MonoBehaviour
 
         StartCoroutine(DeathEffectRoutine());
         祝福管理器.Instance.增加祝福值(玩家属性.Instance.祝福击杀增长);
+
+        if (分数管理器.Instance != null)
+        {
+            分数管理器.Instance.增加分数(击杀分数);
+        }
     }
 
     IEnumerator DeathEffectRoutine()
