@@ -4,31 +4,31 @@
 UnityConnectSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 1
-  m_Enabled: 1
+  m_Enabled: 0
   m_TestMode: 0
-  m_EventOldUrl: https://api.uca.cloud.unity3d.com/v1/events
-  m_EventUrl: https://cdp.cloud.unity3d.com/v1/events
-  m_ConfigUrl: https://config.uca.cloud.unity3d.com
-  m_DashboardUrl: https://dashboard.unity3d.com
-  m_CNEventUrl: https://cdp.cloud.unity.cn/v1/events
-  m_CNConfigUrl: https://cdp.cloud.unity.cn/config
+  m_EventOldUrl: 
+  m_EventUrl: 
+  m_ConfigUrl: 
+  m_DashboardUrl: 
+  m_CNEventUrl: 
+  m_CNConfigUrl: 
   m_TestInitMode: 0
   CrashReportingSettings:
-    m_EventUrl: https://perf-events.cloud.unity.cn
+    m_EventUrl: 
     m_Enabled: 0
     m_LogBufferSize: 10
-    m_CaptureEditorExceptions: 1
+    m_CaptureEditorExceptions: 0
   UnityPurchasingSettings:
     m_Enabled: 0
     m_TestMode: 0
   UnityAnalyticsSettings:
-    m_Enabled: 1
+    m_Enabled: 0
     m_TestMode: 0
-    m_InitializeOnStartup: 1
+    m_InitializeOnStartup: 0
     m_PackageRequiringCoreStatsPresent: 0
   UnityAdsSettings:
     m_Enabled: 0
-    m_InitializeOnStartup: 1
+    m_InitializeOnStartup: 0
     m_TestMode: 0
     m_IosGameId: 
     m_AndroidGameId: 
