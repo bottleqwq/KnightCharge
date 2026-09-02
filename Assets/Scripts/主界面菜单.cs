@@ -20,6 +20,24 @@ public class 主界面菜单 : MonoBehaviour
         音频管理器.Instance.播放按钮点击音效();
     }
 
+    // 隐私政策
+    public void 查看隐私政策()
+    {
+        if (隐私政策管理器.Instance != null)
+        {
+            隐私政策管理器.Instance.ShowPrivacyPolicyManually();
+        }
+        else
+        {
+            Debug.LogWarning("未找到 隐私政策管理器 实例！");
+        }
+
+        if (音频管理器.Instance != null)
+        {
+            音频管理器.Instance.播放按钮点击音效();
+        }
+    }
+
     // 退出游戏
     public void 退出游戏()
     {

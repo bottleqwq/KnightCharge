@@ -70,6 +70,7 @@ public class 玩家控制器 : MonoBehaviour
     public bool isAiming = false; // 是否正在瞄准(停止旋转)
     public bool isDashing = false; // 是否正在冲刺
     public bool isInvincible = false; //是否为无敌状态
+    public bool isDead = false; // 是否已阵亡
 
     private Rigidbody2D rb;
     private SpriteRenderer 剑的SpriteRenderer; // 缓存剑的SpriteRenderer
@@ -89,6 +90,12 @@ public class 玩家控制器 : MonoBehaviour
         UpdateUI();
         蓄力条.value = 0;
         护盾物件.SetActive(false);
+
+        // 重置本局获得的金币统计
+        if (玩家属性.Instance != null)
+        {
+            玩家属性.Instance.重置本局金币();
+        }
 
         // 应用选择的武器
         应用选择的武器();
@@ -175,6 +182,8 @@ public class 玩家控制器 : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+
         // 如果速度小于阈值，且之前是冲刺状态，则结束冲刺
         // 注意：这里只在速度降低时重置，避免覆盖PerformDash中设置的isDashing
         if (isDashing && rb.velocity.magnitude < 1.0f)
@@ -379,7 +388,7 @@ public class 玩家控制器 : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        if (isInvincible) return;
+        if (isInvincible || isDead) return;
         float 闪避 = Random.Range(0f, 100f);
         if (闪避 <= 玩家属性.Instance.闪避率)
         {
@@ -416,9 +425,19 @@ public class 玩家控制器 : MonoBehaviour
         
         if (当前生命值 <= 0)
         {
+            isDead = true;
+            isAiming = false;
+            isDashing = false;
+            if (蓄力条 != null)
+            {
+                蓄力条.gameObject.SetActive(false);
+            }
             Debug.Log("游戏结束！");
             Time.timeScale = 0f;
-            阵亡面板.SetActive( true );
+            if (阵亡面板 != null)
+            {
+                阵亡面板.SetActive(true);
+            }
         }
     }
     // 计算伤害：根据蓄力百分比计算实际伤害
@@ -531,5 +550,67 @@ public class 玩家控制器 : MonoBehaviour
         // 使用由于TimeScale为0，不能用WaitForSeconds，要用realtime
         yield return new WaitForSecondsRealtime(duration);
         Time.timeScale = originalScale;
+    }
+
+    /// <summary>
+    /// 玩家看视频复活：恢复一半生命值、所有体力值、所有护甲值，并获得一个临时护盾
+    /// </summary>
+    public void 执行复活()
+    {
+        isDead = false;
+        isAiming = false;
+        isDashing = false;
+
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero;
+        }
+
+        if (蓄力条 != null)
+        {
+            蓄力条.gameObject.SetActive(false);
+            蓄力条.value = 0f;
+        }
+
+        // 停止之前的无敌/护盾等协程，避免状态冲突
+        StopAllCoroutines();
+        currentShieldCoroutine = null;
+
+        // 1. 恢复一半生命值
+        float maxHp = (玩家属性.Instance != null) ? 玩家属性.Instance.最大生命值 : 10f;
+        当前生命值 = maxHp * 0.5f;
+
+        // 2. 恢复所有体力值
+        当前体力值 = (玩家属性.Instance != null) ? 玩家属性.Instance.最大体力值 : 100f;
+
+        // 3. 恢复所有护甲值
+        当前护甲值 = (玩家属性.Instance != null) ? 玩家属性.Instance.最大护甲值 : 5f;
+        上次受伤时间 = -999f;
+        护甲恢复累积值 = 0f;
+
+        // 4. 获得临时护盾
+        float shieldDuration = (玩家属性.Instance != null) ? 玩家属性.Instance.护盾时长 : 3f;
+        if (shieldDuration <= 0f) shieldDuration = 3f;
+        获得临时护盾(shieldDuration);
+
+        // 5. 刷新UI显示
+        UpdateUI();
+
+        // 6. 隐藏阵亡面板
+        if (阵亡面板 != null)
+        {
+            阵亡面板.SetActive(false);
+        }
+
+        // 7. 恢复游戏时间
+        Time.timeScale = 1f;
+
+        // 8. 播放强化/复活音效
+        if (音频管理器.Instance != null)
+        {
+            音频管理器.Instance.播放强化音效();
+        }
+
+        Debug.Log($"<color=green>[玩家复活]</color> 复活成功！当前血量: {当前生命值}/{maxHp}, 体力: {当前体力值}, 护甲: {当前护甲值}, 获得护盾: {shieldDuration}秒");
     }
 }

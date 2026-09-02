@@ -57,6 +57,7 @@ public class 玩家属性 : MonoBehaviour
 
     [Header("当前金币数量")]
     public int 当前金币 = 0;
+    public int 本局获得金币 = 0;
 
     [Header("UI 设置")]
     public TextMeshProUGUI 金币显示文本;
@@ -107,6 +108,12 @@ public class 玩家属性 : MonoBehaviour
         旋转速度修正值 = 0f;
         击退增加值 = 0f;
         冲刺力度增加值 = 0f;
+
+        重置本局金币();
+    }
+    public void 重置本局金币()
+    {
+        本局获得金币 = 0;
     }
     void 更新金币显示文本()
     {
@@ -115,13 +122,17 @@ public class 玩家属性 : MonoBehaviour
             金币显示文本.text = "金币: " + 当前金币.ToString();
         }
     }
-    public void 增加金币(int amount)
+    public void 增加金币(int amount, bool 计入本局 = true)
     {
         当前金币 += amount;
+        if (计入本局)
+        {
+            本局获得金币 += amount;
+        }
         更新金币显示文本();
         PlayerPrefs.SetInt(保存金币KEY, 当前金币);
         PlayerPrefs.Save();
-        Debug.Log("当前金币: " + 当前金币);
+        Debug.Log($"当前金币: {当前金币}, 本局获得金币: {本局获得金币}");
     }
 
     public void 注册金币显示文本(TextMeshProUGUI newTextComponent)

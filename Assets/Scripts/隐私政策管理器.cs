@@ -40,7 +40,12 @@ public class 隐私政策管理器 : MonoBehaviour
     [SerializeField] private string 隐私政策在线URL = "https://your-privacy-policy-link.html";
 
     // PlayerPrefs 存储 Key（若未来隐私政策有重大版本更新，可修改此 key 如 PrivacyAgreed_v2 触发重新授权）
-    private const string PRIVACY_KEY = "PrivacyPolicyAgreed_v1";
+    public const string PRIVACY_KEY = "PrivacyPolicyAgreed_v1";
+
+    /// <summary>
+    /// 全局查询用户是否已经同意过隐私政策
+    /// </summary>
+    public static bool HasAgreed => PlayerPrefs.GetInt(PRIVACY_KEY, 0) == 1;
 
     private void Awake()
     {
@@ -73,7 +78,7 @@ public class 隐私政策管理器 : MonoBehaviour
     /// </summary>
     public void CheckPrivacyStatus()
     {
-        bool hasAgreed = PlayerPrefs.GetInt(PRIVACY_KEY, 0) == 1;
+        bool hasAgreed = HasAgreed;
 
         if (!hasAgreed)
         {
@@ -126,7 +131,13 @@ public class 隐私政策管理器 : MonoBehaviour
             音频管理器.Instance.播放按钮点击音效();
         }
 
-        Debug.Log("用户已同意隐私政策，游戏正常启动。");
+        // 🎯 核心合规动作：用户明确点击同意后，立即触发广告 SDK 初始化与权限请求
+        if (KnightCharge.Ad.DirichletInit.Instance != null)
+        {
+            KnightCharge.Ad.DirichletInit.Instance.InitSdk();
+        }
+
+        Debug.Log("用户已同意隐私政策，广告 SDK 开始初始化，游戏正常启动。");
     }
 
     /// <summary>

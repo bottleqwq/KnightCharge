@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using KnightCharge.Ad;
 
 /// <summary>
 /// 武器选择UI控制器：处理武器选择界面的交互
@@ -67,6 +68,9 @@ public class 武器选择UI控制器 : MonoBehaviour
     public GameObject 解锁面板;
     public Button 购买解锁按钮;
     public TextMeshProUGUI 解锁价格文本;
+    public Button 看视频解锁按钮;
+    public TextMeshProUGUI 看视频解锁按钮文本;
+    public GameObject 解锁提示UI;
 
     [Header("武器解锁价格配置")]
     public int 大剑_解锁价格 = 20;
@@ -201,6 +205,11 @@ public class 武器选择UI控制器 : MonoBehaviour
         if (购买解锁按钮 != null)
         {
             购买解锁按钮.onClick.AddListener(点击购买解锁);
+        }
+        // 绑定看视频解锁按钮
+        if (看视频解锁按钮 != null)
+        {
+            看视频解锁按钮.onClick.AddListener(点击看视频解锁武器);
         }
 
         if (强化基础伤害按钮 != null)
@@ -357,12 +366,18 @@ public class 武器选择UI控制器 : MonoBehaviour
                 解锁面板.SetActive(true);
                 int price = 获取武器价格(weaponData.武器名称);
                 if (解锁价格文本 != null) 解锁价格文本.text = $"{price}";
+                if (看视频解锁按钮 != null)
+                {
+                    看视频解锁按钮.interactable = true;
+                    if (看视频解锁按钮文本 != null) 看视频解锁按钮文本.text = "看视频解锁";
+                }
             }
         }
         音频管理器.Instance.播放按钮点击音效();
         显示界面.gameObject.SetActive(true);
         提示文字.gameObject.SetActive(false);
     }
+
     void 点击购买解锁()
     {
         if (当前选择的武器数据 == null) return;
@@ -378,8 +393,11 @@ public class 武器选择UI控制器 : MonoBehaviour
         {
             // 扣费成功，保存状态
             设置武器已解锁(weaponName);
-            音频管理器.Instance.播放金币掉落音效();
-            Debug.Log($"解锁成功：{weaponName}");
+            音频管理器.Instance.播放强化音效();
+            Debug.Log($"金币购买解锁成功：{weaponName}");
+
+            // 飘字提示
+            显示解锁提示($"已解锁武器：{weaponName}！");
 
             // 刷新界面，变为已解锁状态
             重新加载当前武器();
@@ -387,7 +405,91 @@ public class 武器选择UI控制器 : MonoBehaviour
         else
         {
             Debug.Log("金币不足，无法解锁！");
-            // 这里可以加一个飘字提示 "金币不足"
+            显示解锁提示("金币不足！可观看视频解锁");
+        }
+    }
+
+    void 点击看视频解锁武器()
+    {
+        if (当前选择的武器数据 == null) return;
+        string weaponName = 当前选择的武器数据.武器名称;
+
+        // 检查是否已经解锁
+        if (检查武器是否解锁(weaponName)) return;
+
+        if (音频管理器.Instance != null)
+        {
+            音频管理器.Instance.播放按钮点击音效();
+        }
+
+        if (看视频解锁按钮 != null)
+        {
+            看视频解锁按钮.interactable = false;
+        }
+
+        // 确保广告管理器单例存在
+        if (DirichletRewardVideoManager.Instance == null)
+        {
+            var mgrGo = new GameObject("DirichletRewardVideoManager");
+            mgrGo.AddComponent<DirichletRewardVideoManager>();
+        }
+
+        Debug.Log($"[AdReward] 用户申请观看激励视频解锁武器: {weaponName}");
+
+        DirichletRewardVideoManager.Instance.ShowRewardVideo(
+            onRewardSuccess: () =>
+            {
+                // 1. 核心发奖逻辑：解锁武器
+                设置武器已解锁(weaponName);
+                if (音频管理器.Instance != null)
+                {
+                    音频管理器.Instance.播放强化音效();
+                }
+                Debug.Log($"<color=green>[AdReward] 激励视频验证成功！已免费解锁武器：{weaponName}</color>");
+
+                // 2. 飘字提示动效
+                显示解锁提示($"已免费解锁：{weaponName}！");
+
+                // 3. 刷新界面为已解锁状态
+                重新加载当前武器();
+            },
+            onAdClosed: () =>
+            {
+                Debug.Log("[AdReward] 武器解锁广告关闭，恢复按钮交互");
+                if (看视频解锁按钮 != null)
+                {
+                    看视频解锁按钮.interactable = true;
+                }
+            },
+            onAdFailed: (errorCode, errorMessage) =>
+            {
+                Debug.LogWarning($"[AdReward] 武器解锁广告展示失败: [{errorCode}] {errorMessage}");
+                if (看视频解锁按钮 != null)
+                {
+                    看视频解锁按钮.interactable = true;
+                }
+                显示解锁提示("广告加载失败，请稍后重试");
+            }
+        );
+    }
+
+    private void 显示解锁提示(string message)
+    {
+        if (解锁提示UI == null) return;
+
+        var effect = 解锁提示UI.GetComponent<奖励提示动效>();
+        if (effect == null)
+        {
+            effect = 解锁提示UI.AddComponent<奖励提示动效>();
+        }
+
+        if (effect != null)
+        {
+            effect.播放提示(message);
+        }
+        else
+        {
+            解锁提示UI.SetActive(true);
         }
     }
 
