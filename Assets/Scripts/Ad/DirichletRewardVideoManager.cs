@@ -14,8 +14,8 @@ namespace KnightCharge.Ad
         public static DirichletRewardVideoManager Instance { get; private set; }
 
         [Header("广告位配置")]
-        [Tooltip("Dirichlet 激励视频广告位 ID")]
-        public long spaceId = 1063197L;
+        [Tooltip("Dirichlet 激励视频广告位 ID（当前接入位: 1063658）")]
+        public long spaceId = 1063658L;
 
         [Header("编辑器测试配置")]
         [Tooltip("在 Unity Editor 中自动模拟广告播放成功并发放奖励（方便开发调试）")]
@@ -62,7 +62,8 @@ namespace KnightCharge.Ad
         /// <param name="onRewardSuccess">奖励核验成功回调（仅在 args.IsVerified == true 时触发）</param>
         /// <param name="onAdClosed">广告关闭回调（用于恢复游戏背景音效、交互等）</param>
         /// <param name="onAdFailed">广告加载或展示失败回调 (errorCode, errorMessage)</param>
-        public void ShowRewardVideo(Action onRewardSuccess, Action onAdClosed = null, Action<string, string> onAdFailed = null)
+        /// <param name="targetSpaceId">可选：自定义广告位 ID（若不传则使用默认 spaceId: 1063658）</param>
+        public void ShowRewardVideo(Action onRewardSuccess, Action onAdClosed = null, Action<string, string> onAdFailed = null, long? targetSpaceId = null)
         {
 #if UNITY_EDITOR
             if (simulateSuccessInEditor)
@@ -91,11 +92,12 @@ namespace KnightCharge.Ad
             // 销毁上一次未释放的广告对象
             DestroyCurrentAd();
 
+            long activeSpaceId = targetSpaceId ?? spaceId;
             var request = new DirichletAdRequest.Builder()
-                .WithSpaceId(spaceId)
+                .WithSpaceId(activeSpaceId)
                 .Build();
 
-            Debug.Log($"[Dirichlet] 开始加载激励视频广告: SpaceId={spaceId}");
+            Debug.Log($"[Dirichlet] 开始加载激励视频广告: SpaceId={activeSpaceId}");
 
             _adNative.LoadRewardVideoAd(
                 request,
